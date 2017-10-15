@@ -1,0 +1,4 @@
+name = viamofilter
+description = Viamo View filter Customisatiom .
+core = 7.x
+package = z

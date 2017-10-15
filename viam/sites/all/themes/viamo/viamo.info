@@ -1,0 +1,99 @@
+name = 'viamo'
+description = Bootstrap Framework Less source files dependent on bootstrap theme.
+core = 7.x
+;base theme = bootstrap
+
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Regions
+;;;;;;;;;;;;;;;;;;;;;
+
+regions[navigation]     = 'Navigation'
+regions[homepagebanner] =  Home Page Banner
+regions[header]         = 'Top Bar'
+regions[featured]       =  Featured
+regions[highlighted]    = 'Highlighted'
+regions[help]           = 'Help'
+regions[content]        = 'Content'
+regions[sidebar_first]  = 'Primary'
+regions[sidebar_second] = 'Secondary'
+regions[footer]         = 'Footer'
+regions[page_top]       = 'Page top'
+regions[page_bottom]    = 'Page bottom'
+regions[mobile_navigation] = 'Mobile Navigation'
+regions[user_login]        = 'User Login'
+
+regions[footer_firstcolumn] = Footer first column
+regions[footer_secondcolumn] = Footer second column
+regions[footer_thirdcolumn] = Footer third column
+regions[footer_fourthcolumn] = Footer fourth column
+regions[footer_fivthcolumn] = Footer fivth column
+
+regions[bottom_footer_firstcolumn] = Bottom Footer first column
+regions[bottom_footer_secondcolumn] =  Bottom Footer second column
+regions[bottom_footer_thirdcolumn] = Bottom Footer third column
+regions[bottom_footer_fourthcolumn] = Bottom Footer fourth column
+regions[bottom_footer_fivthcolumn] = Bottom Footer fivth column
+regions[bottom_footer_sixcolumn] = Bottom Footer sixth column
+
+                            ;;;;;;;;;;;;;;;;;;;;;
+                            ;; Stylesheets
+                            ;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Spacing
+;;;;;;;;;;;;;;;;;;;;;
+
+stylesheets[all][] = 'assets/css/spacing.css'
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Hamburger Animation
+;;;;;;;;;;;;;;;;;;;;;
+
+stylesheets[all][] = 'assets/plugins/hamburgers/hamburgers.css'
+
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Fancybox 3
+;;;;;;;;;;;;;;;;;;;;;
+
+;stylesheets[all][] = 'assets/plugins/fancybox3/jquery.fancybox.min.css'
+;stylesheets[all][] = 'assets/plugins/fancybox3/additional-styles.css'
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Owl Carousel
+;;;;;;;;;;;;;;;;;;;;;
+
+stylesheets[all][] = 'assets/plugins/owlcarousel/assets/owl.carousel.min.css'
+stylesheets[all][] = 'assets/plugins/owlcarousel/assets/owl.theme.default.min.css'
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Vimeo
+;;;;;;;;;;;;;;;;;;;;;
+
+stylesheets[all][] = 'assets/css/application.css'
+stylesheets[all][] = 'assets/css/application-queries.css'
+stylesheets[all][] = 'css/style.css'
+
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Social Login Buttons
+;;;;;;;;;;;;;;;;;;;;;
+
+stylesheets[all][] = 'assets/css/materialize-social.css'
+
+
+;stylesheets[all][] = 'assets/plugins/owlcarousel/assets/owl.carousel.min.css'
+;stylesheets[all][] = 'assets/plugins/owlcarousel/assets/owl.theme.default.min.css'
+;stylesheets[all][] = 'assets/css/bootstrap-spacing.css'
+;stylesheets[all][] = 'assets/plugins/hamburgers/hamburgers.css'
+;stylesheets[all][] = 'assets/css/materialize-social.css'
+;stylesheets[all][] = 'assets/css/header.css'
+;stylesheets[all][] = 'assets/css/application.css'
+;stylesheets[all][] = 'assets/css/application-front-end.css'
+;stylesheets[all][] = 'assets/css/application-queries.css'
+;stylesheets[all][] = 'css/style.css'
+
+
+; Panels layouts. You can place multiple layouts under the "layouts" folder.
+plugins[panels][layouts] = layouts

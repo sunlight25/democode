@@ -1,0 +1,379 @@
+<?php
+/**
+ * Implements hook_form_alter().
+ */
+function viamocommerce_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state) {
+    //$form['submit']['#attributes']['class'][] = 'add-to-cart-button';
+    //echo "<pre>";
+    $form['#prefix']='<div class="add-to-cart-cs">';
+    $form['#suffix']='</div>';
+    $form['submit']['#prefix'] ='<div class="right">';
+    $form['submit']['#suffix'] ='</div>';    
+    $form['add_to_wishlist']['#attributes']['class'][] = 'left';
+    $form['add_to_wishlist']['#prefix'] ='<div class="left">';
+    $form['add_to_wishlist']['#suffix'] ='</div>';
+    $form['#attributes']['class'][] ='buttons';    
+    //$form['submit']['#value'] ='book';    
+    // => Add to cart    
+    //print_r($form); exit;    
+}
+
+/**
+ * Removes the label for product title before output.
+ */
+function viamocommerce_node_view_alter(&$build) {            
+  
+  if(isset($build['product:sku']['#label'])) {
+    //echo "<pre>";
+    //print_r($build['product:sku']['#label']); exit;
+    $build['product:sku']['#label'] = str_replace("SKU:", "Product code:", $build['product:sku']['#label']);
+  }
+  
+  if(isset($build['field_product_variations'][0]['add_to_wishlist'])) {
+      unset($build['field_product_variations'][0]['add_to_wishlist']); 
+  }
+  
+}
+
+/**
+ * Removes the label for product title before output.
+ */
+function viamocommerce_preprocess_commerce_product_title(&$variables) {
+  $variables['label'] = '';  
+  //echo "<pre>";
+  //print_r($variables['label']); exit;    
+}
+
+
+/*
+ *  Impelement  hook_form_alter(); 
+ * 
+ */
+
+function viamocommerce_form_alter(&$form, $form_state, $form_id) {           
+    global $user;                    
+    if (in_array('Venue User', $user->roles)) {        
+        switch ($form_id) {
+          case 'venues_node_form':
+          case 'event_calendar_node_form':
+            if ($form['#node']->type == 'venues') {
+                $form['actions']['submit']['#submit'][] = 'viamocommerce_redirect_dashboard';                      
+            }
+            if ($form['#node']->type == 'event_calendar') {                 
+                $form['actions']['submit']['#submit'][] = 'viamocommerce_redirect_dashboard';                      
+            }
+            return;          
+        }
+    } 
+    if (in_array('Standard Account(Host or Guest)', $user->roles)) {       
+        switch ($form_id) {            
+          case 'event_calendar_node_form':            
+            if ($form['#node']->type == 'event_calendar') {                                
+                $form['#cache'] = FALSE;                
+                $form['#no_cache'] = TRUE; 
+                $form_state['cache'] = FALSE; 
+                $form['#attached']['js'] = array(drupal_get_path('theme','viamo') . '/js/script.js');                                                                                                                        
+                global $user;                                                                                    
+                 $language = $form['field_host_name']['#language'];
+                 $form['#prefix'] = '<div id="formwrapper">';
+                 $form['#suffix'] = '</div>';       
+                 $form['field_host_name'][$language]['#default_value'] = array(0=>$user->uid);                 
+                 $form['field_host_name'][$language]['#options']['_none'] = 'Select Host Name';                                 
+                 $form['field_package'][$language]['#options']['_none'] = 'Select Package';
+                 $form['actions']['submit']['#submit'][] = 'viamocommerce_host_redirect_dashboard';                                                                                                      
+                 $form['field_ceremony_time'][$language][0]['value']['#attributes']['class'][] = 'timepicker';
+                 $form['field_reception_time'][$language][0]['value']['#attributes']['class'][] = 'timepicker';
+                 $form['title']['#default_value'] = $user->name."s Events";
+                  $form['title']['#type'] = 'hidden'; 
+                 
+                  $form['field_other_ceremony_venue_on_of'][$language]['#attributes']['class'][] = 'on-off-ceremony-venue';
+                  $form['field_other_reception_venue_on_o'][$language]['#attributes']['class'][] = 'on-off-reception-venue';
+                  
+                  /*
+            *  For other ceremony venue
+            *  remove validation
+            */
+                  
+                  if(isset($form_state['input']['field_other_ceremony_venue_on_of']['und'])) {
+                        if($form_state['input']['field_other_ceremony_venue_on_of']['und'] == 1) {  
+
+                          $form['field_other_ceremony_venue']['#prefix'] = '<div id="other-ceremony-venue1">';
+                          $form['field_other_ceremony_venue']['#suffix'] = '</div>';                                      
+                          $form['field_other_ceremony_venue'][$language][0]['value']['#required'] = TRUE;
+                          $form['field_other_ceremony_venue'][$language][0]['#required'] = TRUE;
+                          $form['field_other_ceremony_venue'][$language]['#required'] = TRUE;
+
+                          $form['field_ceremony_venue'][$language][0]['target_id']['#required'] ='';
+                          $form['field_ceremony_venue']['#access'] = FALSE;            
+                       }                 
+                  } else {
+
+                          $form['field_other_ceremony_venue']['#prefix'] = '<div id="other-ceremony-venue">';
+                          $form['field_other_ceremony_venue']['#suffix'] = '</div>';                                      
+
+                          $form['field_ceremony_venue'][$language][0]['target_id']['#required'] =TRUE;
+                          $form['field_ceremony_venue'][$language][0]['#required'] = TRUE;
+                          $form['field_ceremony_venue'][$language]['#required'] = TRUE;
+
+
+                          $form['field_other_ceremony_venue'][$language][0]['value']['#required'] = FALSE;
+                          $form['field_other_ceremony_venue'][$language][0]['#required'] = FALSE;
+                          $form['field_other_ceremony_venue'][$language]['#required'] = FALSE;
+                      }  
+                
+                /*
+            *  For other reception value
+            *  remove validation
+            */
+                
+                //echo $form_state['input']['field_other_reception_venue_on_o']['und']; exit;
+                if(isset($form_state['input']['field_other_reception_venue_on_o']['und'])) {
+                    if($form_state['input']['field_other_reception_venue_on_o']['und'] == 1) {  
+
+                        $form['field_other_reception_venue']['#prefix'] = '<div id="other-reception-venue1">';
+                        $form['field_other_reception_venue']['#suffix'] = '</div>';                                      
+                        $form['field_other_reception_venue'][$language][0]['value']['#required'] = TRUE;
+                        $form['field_other_reception_venue'][$language][0]['#required'] = TRUE;
+                        $form['field_other_reception_venue'][$language]['#required'] = TRUE;
+
+                        $form['field_venues'][$language][0]['target_id']['#required'] ='';
+                        $form['field_venues']['#access'] = FALSE;            
+                     }                
+                }  else {
+
+                        $form['field_other_reception_venue']['#prefix'] = '<div id="other-reception-venue">';
+                        $form['field_other_reception_venue']['#suffix'] = '</div>';                                      
+
+                        $form['field_venues'][$language][0]['target_id']['#required'] =TRUE;
+                        $form['field_venues'][$language][0]['#required'] = TRUE;
+                        $form['field_venues'][$language]['#required'] = TRUE;
+
+
+                        $form['field_other_reception_venue'][$language][0]['value']['#required'] = FALSE;
+                        $form['field_other_reception_venue'][$language][0]['#required'] = FALSE;
+                        $form['field_other_reception_venue'][$language]['#required'] = FALSE;
+                    }
+                
+                
+                 if($form['field_other_ceremony_venue_on_of'][$language]['#default_value']==1) {
+                        $form['field_other_ceremony_venue']['#prefix'] = '<div id="other-ceremony-venue1">';
+                        $form['field_other_ceremony_venue']['#suffix'] = '</div>';                                      
+                        $form['field_other_ceremony_venue'][$language][0]['value']['#required'] = TRUE;
+                        $form['field_other_ceremony_venue'][$language][0]['#required'] = TRUE;
+                        $form['field_other_ceremony_venue'][$language]['#required'] = TRUE;
+
+                        $form['field_ceremony_venue'][$language][0]['target_id']['#required'] ='';
+                        $form['field_ceremony_venue']['#access'] = FALSE;                                               
+                 }
+                 
+                 if($form['field_other_reception_venue_on_o'][$language]['#default_value']==1) {
+                        $form['field_other_reception_venue']['#prefix'] = '<div id="other-reception-venue1">';
+                        $form['field_other_reception_venue']['#suffix'] = '</div>';                                      
+                        $form['field_other_reception_venue'][$language][0]['value']['#required'] = TRUE;
+                        $form['field_other_reception_venue'][$language][0]['#required'] = TRUE;
+                        $form['field_other_reception_venue'][$language]['#required'] = TRUE;
+
+                        $form['field_venues'][$language][0]['target_id']['#required'] ='';
+                        $form['field_venues']['#access'] = FALSE;   
+                     
+                 }
+                 
+                 //echo "<pre>";
+                 //print_r($form['field_other_ceremony_venue_on_of'][$language]['#default_value']); 
+                 //print_r($form['field_other_reception_venue_on_o'][$language]['#default_value']); exit;
+                 
+                 
+                 //$form['field_venues'][$language][0]['target_id']['#attributes']['onchange'] = 'handle(this.value)';
+                 
+                 
+                  //echo "<pre>";
+                  //print_r( $form); exit;
+               /*  
+                if($form_state['input']['field_ceremony_venue']['und'][0]['target_id'] == 'Other Venue (96)' ) {                                
+
+                              $form['field_other_ceremony_venue']['#prefix'] = '<div id="other-ceremony-venue1">';
+                              $form['field_other_ceremony_venue']['#suffix'] = '</div>';                                                                    
+                } else{
+                              $form['field_other_ceremony_venue']['#prefix'] = '<div id="other-ceremony-venue">';
+                              $form['field_other_ceremony_venue']['#suffix'] = '</div>'; 
+                }       
+
+                if($form_state['input']['field_venues']['und'][0]['target_id'] == 'Other Venue (96)' ) {    
+
+                        $form['field_other_reception_venue']['#prefix'] = '<div id="other-reception-venue1">';
+                        $form['field_other_reception_venue']['#suffix'] = '</div>';                                   
+
+                } else {
+                    
+                        $form['field_other_reception_venue']['#prefix'] = '<div id="other-reception-venue">';
+                        $form['field_other_reception_venue']['#suffix'] = '</div>';   
+                }*/
+                 
+                 $form['field_other_reception_venue'][$language][0]['value']['#attributes']['class'][] = 'other-reception-venue';
+                 $form['field_other_ceremony_venue'][$language][0]['value']['#attributes']['class'][] = 'other-ceremony-venue';
+                 //echo "<pre>";
+                 //print_r($form['field_other_ceremony_venue'][$language]['#required']); exit;                 
+                  //$form['field_venues'][$language]['#default_value'] => The Grand Hotel (15)  
+                // dpm($form['field_other_ceremony_venue_on_of']);
+                 
+                 //echo "<pre>";
+                 //print_r($form['field_other_ceremony_venue_on_of']['und']); exit;
+                 //'#submit' => array('ea_add_option_submit'),
+                 //'#submit' => array('node_form_submit'),
+                 //$form['field_other_ceremony_venue_on_of']['und']['#submit']=array('ea_add_option_submit');
+                 /*$form['field_other_ceremony_venue_on_of']['und']['#ajax'] = array(
+                          'callback' => 'viamocommerce_ceremony_venues_form_callback',
+                          'wrapper' => 'formwrapper',
+                          'method' => 'replace',
+                          //'event' => 'click',
+                       );*/
+                 //echo "<pre>";
+                 //print_r($form['field_other_ceremony_venue_on_of']['und']); exit;
+                  $form['add_button']= array(
+                        '#type' => 'submit',
+                        '#value'           => 'ceremony venue',
+                        '#limit_validation_errors' => array(),
+                        '#submit' => array('ea_add_option_submit'),
+                        '#attributes'    => array('class'=>array('btn-add','ceremony-venue')),
+                        '#ajax' => array(
+                          'callback' => 'viamocommerce_ceremony_venues_form_callback',
+                          'wrapper' => 'formwrapper',
+                          'method' => 'replace',
+                          //'event' => 'click',
+                       ),
+                  );
+                  
+               //  dpm($form_state);
+                 //dpm($form;                                                  
+            }
+            return;          
+          case 'user_guest_list_node_form':                          
+            if ($form['#node']->type == 'user_guest_list') {                       
+                $form['actions']['submit']['#submit'][] = 'viamocommerce_user_guest_list_redirect';                      
+            }
+           return;          
+        }
+    } 
+    if (in_array('merchant', $user->roles)) {
+        switch ($form_id) {
+          case 'product_node_form':                                      
+            // Also if a user owns just one store, add it to the field by default.
+            $query = new EntityFieldQuery();
+            $entities = $query->entityCondition('entity_type', 'commerce_store', '=')
+              ->propertyCondition('status', 1)
+              ->propertyCondition('uid', $user->uid)
+              ->execute();
+            if (isset($entities['commerce_store']) && count($entities['commerce_store']) == 1) {                                
+              $store_ids = array_keys($entities['commerce_store']);
+              $store = commerce_store_load(reset($store_ids));
+              //$form['commerce_store'][$form['commerce_store']['#language']][0]['target_id']['#default_value'] = $store->title . ' (' . $store->store_id . ')';                                                        
+              $storeLanguage = $form['field_product_variations'][$form['field_product_variations']['#language']]['form']['commerce_store']['#language'];
+              $form['field_product_variations'][$form['field_product_variations']['#language']]['form']['commerce_store'][$storeLanguage][0]['target_id']['#required'] = TRUE;
+              $form['field_product_variations'][$form['field_product_variations']['#language']]['form']['commerce_store'][$storeLanguage][0]['target_id']['#attributes']['readonly'] = 'readonly';                             
+              $form['field_product_variations'][$form['field_product_variations']['#language']]['form']['commerce_store'][$storeLanguage][0]['target_id']['#default_value'] = $store->title . ' (' . $store->store_id . ')';               
+            }
+            if ($form['#node']->type == 'product') {                
+                $form['actions']['submit']['#submit'][] = 'viamocommerce_redirect_vendor_dashboard';                      
+            }
+            return;
+            case 'user_profile_form':
+                $form['#action']=substr($form['#action'], 0,-5);                
+            return;
+        }
+    }         
+}
+
+/*
+ * Impelement  hook_redirect_dashboard();
+ * 
+ */
+function viamocommerce_redirect_dashboard($form, &$form_state) {             
+    $form_state['redirect'] = 'venue-dashboard';      
+}
+
+/*
+ * Impelement  hook_redirect_dashboard();
+ * 
+*/
+
+function viamocommerce_redirect_vendor_dashboard($form, &$form_state) {                 
+    $form_state['redirect'] = 'vendor-dashboard';          
+}
+
+
+function viamocommerce_form_commerce_product_ui_product_form_alter(&$form, &$form_state) {
+  global $user;
+  // If user doesn't have access to product administration  
+  if (!user_access('administer commerce_product entities')) {           
+     $form['commerce_store'][$form['commerce_store']['#language']][0]['target_id']['#attributes']['readonly'] = 'readonly';
+    }
+}  
+
+
+function viamocommerce_host_redirect_dashboard($form, &$form_state) {
+     $form_state['redirect'] = 'standard-dash';    
+}
+
+
+function viamocommerce_user_guest_list_redirect($form, &$form_state) {           
+    if(isset($_GET['destination'])) {
+        $form_state['redirect'] = $_GET['destination'];    
+    }
+}
+
+function viamocommerce_ceremony_venues_form_callback($form, &$form_state) {    
+     
+    $form['#cache'] = FALSE;      
+    $language = $form['field_host_name']['#language'];                      
+//    echo "<pre>";
+//    print_r($form['field_other_ceremony_venue'][$language]); exit;
+    
+    if($form_state['input']['field_other_ceremony_venue_on_of']['und'] == 1) {                                
+            $form['field_other_ceremony_venue']['#prefix'] = '<div id="other-ceremony-venue1">';
+            $form['field_other_ceremony_venue']['#suffix'] = '</div>';                                      
+            $form['field_other_ceremony_venue'][$language][0]['value']['#required'] = TRUE;
+            $form['field_other_ceremony_venue'][$language][0]['#required'] = TRUE;
+            $form['field_other_ceremony_venue'][$language]['#required'] = TRUE;
+            //$form['field_other_ceremony_venue'][$language]['#element_validate'][0] = myelement_validate;
+                                
+            $form['field_ceremony_venue'][$language][0]['target_id']['#required'] ='';
+            $form['field_ceremony_venue']['#access'] = FALSE;            
+    } else {
+        $form['field_ceremony_venue'][$language][0]['target_id']['#required'] =TRUE;
+        $form['field_ceremony_venue'][$language][0]['#required'] = TRUE;
+        $form['field_ceremony_venue'][$language]['#required'] = TRUE;
+        
+        $form['field_other_ceremony_venue'][$language][0]['value']['#required'] = 0;
+    }   
+    
+    if($form_state['input']['field_other_reception_venue_on_o']['und']== 1) {                                
+            $form['field_other_reception_venue']['#prefix'] = '<div id="other-ceremony-venue1">';
+            $form['field_other_reception_venue']['#suffix'] = '</div>';                                      
+            $form['field_other_reception_venue'][$language][0]['value']['#required'] = TRUE;
+            $form['field_other_reception_venue'][$language][0]['#required'] = TRUE;
+            $form['field_other_reception_venue'][$language]['#required'] = TRUE;
+            //$form['field_other_ceremony_venue'][$language]['#element_validate'][0] = myelement_validate;
+                                
+            $form['field_venues'][$language][0]['target_id']['#required'] ='';
+            $form['field_venues']['#access'] = FALSE;            
+    } else {
+        $form['field_venues'][$language][0]['target_id']['#required'] =TRUE;
+        $form['field_venues'][$language][0]['#required'] = TRUE;
+        $form['field_venues'][$language]['#required'] = TRUE;
+        
+        $form['field_other_reception_venue'][$language][0]['value']['#required'] = 0;
+    }
+    
+    return $form;        
+}
+
+function  ea_add_option_submit($form, &$form_state){      
+    $form_state['rebuild'] = TRUE;            
+    return $form;    
+}
+
+function myelement_validate($element, &$form_state, $form) {
+   if (empty($element['#value'])) {
+     form_error($element, t('This field is required.'));
+   }
+}

@@ -1,0 +1,116 @@
+<?php
+
+/**
+ * @file
+ * Contains AddressFieldLookupFieldTest.
+ */
+
+/**
+ * Defines a class for testing field interactions for Address Field Lookup.
+ */
+class AddressFieldLookupFieldTest extends AddressFieldLookupWebTestBase {
+
+  /**
+   * Name of the test address field.
+   *
+   * @var string
+   */
+  protected $testFieldName = 'field_address';
+
+  /**
+   * Settings for our test content type.
+   *
+   * @var array
+   */
+  protected $testContentType = array(
+    'machine_name' => 'shop',
+    'name' => 'Shop',
+  );
+
+  /**
+   * An example address to use for testing.
+   *
+   * @var array
+   */
+  protected $testAddress = array(
+    LANGUAGE_NONE => array(
+      array(
+        'organisation_name' => 'Company',
+        'first_name' => 'Joe',
+        'last_name' => 'Bloggs',
+        'country' => 'GB',
+        'thoroughfare' => 'Street address 1',
+        'premise' => 'Street Address 2',
+        'locality' => 'Town/City',
+        'administrative_area' => 'County',
+        'postal_code' => 'SW1 1AA',
+      ),
+    ),
+  );
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Field functionality tests',
+      'description' => 'Tests the field interactions of the Address Field Lookup module.',
+      'group' => 'Address Field Lookup',
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp() {
+    parent::setUp();
+
+    // Create a node type for testing.
+    $this->drupalCreateContentType(array('type' => $this->testContentType['machine_name'], 'name' => $this->testContentType['name']));
+
+    // Attach the address field.
+    $this->createAttachAddressLookupField($this->testFieldName, 'node', $this->testContentType['machine_name']);
+  }
+
+  /**
+   * Test the address field lookup interaction with the create node form.
+   */
+  public function testAddressFieldLookupNodeCreate() {
+    $langcode = LANGUAGE_NONE;
+
+    // Check permissions and get page contents.
+    $this->getWithPermissions(array("create {$this->testContentType['machine_name']} content"), "node/add/{$this->testContentType['machine_name']}");
+
+    // Check the correct field elements exist.
+    $this->assertFieldByName("{$this->testFieldName}[{$langcode}][0][addressfield_lookup_house_number]", '', 'House number search field is displayed');
+    $this->assertFieldByName("{$this->testFieldName}[{$langcode}][0][addressfield_lookup_postal_code]", '', 'Postal code search field is displayed');
+    $this->assertFieldByName("node_{$this->testContentType['machine_name']}_{$this->testFieldName}_und_0-addressfield_lookup_cancel", t('Enter address manually'), 'Cancel button is displayed');
+    $this->assertFieldByName("node_{$this->testContentType['machine_name']}_{$this->testFieldName}_und_0-addressfield_lookup_find_address", t('Find address'), 'Find address button is displayed');
+  }
+
+  /**
+   * Test the address field lookup interaction with the edit node form.
+   */
+  public function testAddressFieldLookupNodeEdit() {
+    $langcode = LANGUAGE_NONE;
+
+    // Create an example node with a populated address.
+    $test_node = $this->drupalCreateNode(array(
+      'type' => $this->testContentType['machine_name'],
+      $this->testFieldName => $this->testAddress,
+    ));
+
+    // Check permissions and get page contents.
+    $this->getWithPermissions(array("edit any {$this->testContentType['machine_name']} content"), "node/{$test_node->nid}/edit");
+
+    // Check the correct field elements exist.
+    $this->assertFieldByName("node_{$this->testContentType['machine_name']}_{$this->testFieldName}_und_0-addressfield_lookup_search_by_postal_code", t('Search for another address'), 'Search again button is displayed');
+
+    // Check the default search field elements do not exist.
+    $this->assertNoField("{$this->testFieldName}[{$langcode}][0][addressfield_lookup_house_number]", 'House number search field is not displayed');
+    $this->assertNoField("{$this->testFieldName}[{$langcode}][0][addressfield_lookup_postal_code]", 'Postal code search field is not displayed');
+    $this->assertNoField("node_{$this->testContentType['machine_name']}_{$this->testFieldName}_und_0-addressfield_lookup_cancel", 'Cancel button is not displayed');
+    $this->assertNoField("node_{$this->testContentType['machine_name']}_{$this->testFieldName}_und_0-addressfield_lookup_find_address", 'Find address button is not displayed');
+  }
+
+}

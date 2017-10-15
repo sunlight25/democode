@@ -1,0 +1,14 @@
+name = Commerce Registry
+description = Provides gift registry functionality for Drupal Commerce.
+core = 7.x
+
+dependencies[] = commerce
+
+files[] = includes/commerce_registry.entity.inc
+
+; Information added by drupal.org packaging script on 2013-09-30
+version = "7.x-1.0-alpha2+5-dev"
+core = "7.x"
+project = "commerce_registry"
+datestamp = "1380560779"
+

@@ -1,0 +1,273 @@
+/**
+ * This file will be overwritten when the Bootstrap Framework source files
+ * are compiled using the Less CSS pre-processor.
+ */
+.view-shop-categories table {    
+    margin-left: 60px;
+}
+.view-shop-categories table td[class*="col-"], table th[class*="col-"] {
+    position: static;
+    display: table-cell;
+    float: none;
+    padding: 10px;    
+}
+
+
+/*.view-id-viamo_venues table {    
+    margin-left: 60px;
+}*/
+/*.view-id-viamo_venues table td[class*="col-"], table th[class*="col-"] {
+    position: static;
+    display: table-cell;
+    float: none;
+    padding: 10px;    
+}*/
+
+/** list view **/
+ul.list { list-style: none; width: 100%; }
+ul.list li { display: block; background: #c9d0d1; padding: 10px 15px; }
+
+ul.list li.alt { background: #d7dfe0; }
+
+ul.list li section.left { display: block; float: left; width: 350px; position: relative; padding-left: 20px; }
+ul.list li section.right { display: block; float: right; margin-right: 10px; width: 250px; text-align: right; }
+
+ul.list li section.left img.thumb { float: left; margin-right: 10px; }
+ul.list li section.left img.featured-banner { position: absolute; left: -18px; top: 35px; }
+
+ul.list li section.left h3 { font-family: "Trebuchet MS", Arial, sans-serif; font-weight: bold; text-transform: uppercase; color: #707375; font-size: 1.4em; line-height: 1.6em; } 
+ul.list li section.left span.meta { color: #93989b; font-weight: normal; font-size: 1.1em; }
+
+
+ul.list li section.right span.price { font-weight: bold; display: block; margin-bottom: 15px; color: #ad3939; font-size: 1.6em; text-align: right; }
+
+ul.list li section.right a.firstbtn { margin-right: 7px; }
+
+/** grid view **/
+ul.grid { list-style: none; margin: 0 auto; padding-left: 25px; }
+ul.grid li { position: relative; display: block; float: left; width: 220px; height: 200px; border-right: 1px solid #b6bdbe; padding: 5px 22px; margin-bottom: 20px; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; }
+ul.grid li.third { border: 0; }
+
+ul.grid li section.left { position: relative; }
+ul.grid li section.right { /* nothing */ }
+
+ul.grid li section.left img.featured-banner { position: absolute; top: 0; }
+
+ul.grid li section.left h3 { font-family: "Trebuchet MS", Arial, sans-serif; font-weight: bold; text-transform: uppercase; color: #707375; font-size: 1.4em; line-height: 1.5em; } 
+ul.grid li section.left span.meta { display: block; color: #93989b; font-weight: normal; font-size: 1.1em; margin-bottom: 7px; }
+
+ul.grid li section.right span.price { font-weight: bold; display: block; margin-bottom: 5px; color: #ad3939; font-size: 1.75em; }
+
+
+ul.grid li section.right span.darkview { 
+opacity: 0;
+margin: 0; 
+position: absolute;
+top: 0; 
+left: 0; 
+width: 190px; 
+height: 200px;
+margin: 0 15px; 
+border-radius: 6px;
+background: rgba(40, 45, 55, 0.75); 
+overflow: hidden;
+text-align: center;
+padding-top: 35px;
+box-sizing: border-box; 
+-moz-box-sizing: border-box; 
+-webkit-box-sizing: border-box;
+transition: opacity 0.2s linear 0s;
+-webkit-transition: opacity 0.2s linear 0s;
+-moz-transition: opacity 0.25s linear 0s;
+-o-transition: opacity 0.25s linear 0s;  
+}
+ul.grid li:hover section.right span.darkview { opacity: 1; }
+
+ul.grid li section.right span.darkview a.firstbtn { display: block; margin-bottom: 10px; }
+
+#ajax-link-grid x{float: right;padding-right: 194px;margin-right: 764px;margin-bottom: -56px;padding-bottom: 23px;margin-top: -30px;}
+#block-viamolistgridview-list-and-grid{float: right;margin-right: 470px;margin-top: 14px;}
+#ajax-link-grid {margin-right: -2px;margin-left: 8px;}          
+#block-block-1 .banner-text{
+   text-align: left;
+}
+
+//.view-id-viamo_venues .view-content{margin-left: -45px;}
+/*.view-header-text {
+    text-align: center;
+    font-weight: bolder;
+    margin-bottom: -60px;
+}*/
+/*.views-widget-sort-by {margin-top: 25px;}
+#edit-field-venue-type-tid-wrapper .views-widget {margin-top: 25px}*/ 
+
+
+#block-system-powered-by > span {margin-left: 42%;}           
+#site_header #top_bar div ul li {display: inline-block;float: left;margin-left: 20px;}
+.primary-tab {left: 75%;position: relative;}
+.pager-ellipsis.last {display: none !important;}   
+.hidden-md-down .active{color: #ac7b32;}
+.carousel-fade .carousel-item {
+  display: block;
+  position: absolute;
+  opacity: 0;
+ // transition: opacity .75s ease-in-out;
+}
+.carousel-fade .carousel-item.active {
+  opacity: 1;
+}
+
+html,
+body,
+.carousel,
+.carousel-inner,
+.carousel-item {
+  width: 100%;
+  /*height: 100%;*/
+}
+
+.carousel {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.node-venues .container {
+    margin-top: 30px;
+}
+.node-type-venues .fieldset-legend{display: none;}
+.view-header .catg{margin-top: 40px;}
+.product-item .buttons-block .buttons .add-to-wishlist { font-size: 10px; text-transform: uppercase; font-weight: 900; padding: 5px 10px; display:inline-block; float: left; position: relative } 
+.product-item .buttons-block .buttons .add-to-wishlist:hover { text-decoration:none }
+.product-item .buttons-block .buttons .add-to-wishlist { color: #3e454f;}
+.product-item .buttons-block .buttons .left .add-to-wishlist { content:''; width: 1px; height:100%; display: contents; background-color: rgba(232,232,232,1.00); position: absolute;  top: 0;}
+.product-item .buttons-block .buttons a.add-to-wishlist:hover {color: rgba(62,69,79,0.6);}
+.product-item .buttons-block .buttons .right .form-submit{color: rgba(178,134,73,0.6); }
+.product-item .buttons-block .buttons .right { font-size: 10px; text-transform: uppercase; font-weight: 900; padding: 5px 10px; display:inline-block; float: left; position: relative } 
+.product-item .buttons-block .buttons .right { text-decoration:none }
+.product-item .buttons-block .buttons .right .form-submit { color: #b28649 }
+.product-item span.more-info { display: block; line-height:0.8rem}
+.product-item .buttons-block .buttons {width:100%;border-radius: 3px !important;border: 1px solid rgba(212, 67, 67, 1);position: relative;overflow: hidden;}
+.view-product-list .container {margin-top: 30px;}
+#block-system-main{margin-top: 30px;}
+.view-product-list .left {float: left;margin-top: 7px;width: 50%;}
+.node-type-product #hero_title{display: none;}
+.node-type-product .commerce-product-title-label{display: none;}
+.node-type-product .field-name-commerce-price{color: #ac7b32;}
+.node-type-product .row{margin-bottom:10px;}   
+#node-29 #block-system-main {margin-top: 0px;} 
+.node-type-product .product-title-area {padding: 15px 0;}
+		
+
+.page-venue-dashboard table {width:100%;}    
+.page-venue-dashboard table,.view-venues th,.view-venues td {border: 1px solid black;border-collapse: collapse;}        
+.page-venue-dashboard th,.view-venues  td {padding: 5px;text-align: left;}        
+.page-venue-dashboard table.views-table tr:nth-child(even) {background-color: #eee;}    
+.page-venue-dashboard table.views-table tr:nth-child(odd) {background-color:#fff;}   
+.page-venue-dashboard table.views-table th {background-color: black;color: white;}      
+.venue-nav .pane-title{color: #ac7b32;text-transform: uppercase;font-size: 15px;}
+.pane-views-current-user-login-block .pane-title{color: #ac7b32;text-transform: uppercase;font-size: 15px;}
+.pane-menu-menu-venue-navigation-menu .venue-nav .pane-content {margin-top: 21px;}
+.page-venue-dashboard .view-venue-events-list{margin-top: 45px;margin-bottom: 40px;}
+.not-logged-in .no-sidebars .page-venue-dashboard #block-system-main{color: #ac7b32;text-transform: uppercase;font-size: 15px;}
+.page-vendor-dashboard table {width:100%;}    
+.page-vendor-dashboard table,.view-venues th,.view-venues td {border: 1px solid black;border-collapse: collapse;}        
+.page-vendor-dashboard th,.view-venues  td {padding: 5px;}        
+.page-vendor-dashboard table.views-table tr:nth-child(even) {background-color: #eee;}   
+.page-venue-dashboard table.views-table tr:nth-child(odd) {background-color:#fff;}   
+.page-vendor-dashboard table.views-table th {background-color: black;color: white;}       
+.venue-nav .pane-title{color: #ac7b32;text-transform: uppercase;font-size: 15px;}
+.pane-views-current-user-login-block .pane-title{color: #ac7b32;text-transform: uppercase;font-size: 15px;}
+.pane-menu-menu-venue-navigation-menu .venue-nav .pane-content {margin-top: 21px;}
+.page-vendor-dashboard .view-venue-events-list{margin-top: 45px;margin-bottom: 40px;}
+.page-vendor-dashboard th.views-field>a{color: aliceblue;}
+.page-vendor-dashboard .form-control {border: 1.5px solid #3e454f;}
+.panel-pane.pane-block.pane-menu-menu-vendor-navigation.venue-nav.pane-menu {margin-bottom: 14px;}
+
+.page-vendor-dashboard .fieldset-wrapper label{display:none;}    
+.page-vendor-dashboard .fieldset-legend{display:none;}    
+ 
+ /* Start Host Dashboard CSS (31/05/2017)*/
+.page-host-dashboard table {width:100%;}    
+.page-host-dashboard table,.view-venues th,.view-venues td {border: 1px solid black;border-collapse: collapse;}        
+.page-host-dashboard th,.view-venues  td {padding: 5px;}        
+.page-host-dashboard table.views-table tr:nth-child(even) {background-color: #eee;}   
+.page-host-dashboard table.views-table tr:nth-child(odd) {background-color:#fff;}   
+.page-host-dashboard table.views-table th {background-color: black;color: white;}       
+.venue-nav .pane-title{color: #ac7b32;text-transform: uppercase;font-size: 15px;}
+.pane-views-current-user-login-block .pane-title{color: #ac7b32;text-transform: uppercase;font-size: 15px;}
+.page-host-dashboard .view-venue-events-list{margin-top: 45px;margin-bottom: 40px;}
+.page-host-dashboard th.views-field>a{color: aliceblue;}
+.page-host-dashboard .form-control {border: 1.5px solid #3e454f;}
+.panel-pane.pane-block.pane-menu-menu-vendor-navigation.venue-nav.pane-menu {margin-bottom: 14px;}
+.page-host-dashboard .view-header .text-center{font-size:16px;}
+.page-host-dashboard .panels-flexible-row-standard_account_host_or_guest-1-inside {padding-left: 0px;margin-left: 0px;padding-right: 0px;}
+/* END Start Host Dashboard CSS(31/05/2017)*/
+
+
+
+/* Start Host Dashboard CSS(12/06/2017)*/
+.page-event-detail #hero_title{display:none;}
+.page-event-detail #block-system-main {margin-top: -8px;}    
+#hero_title-bg-img {background-color:#3e454f; padding: 30px 0 40px;}
+#hero_title-bg-img h1:after {content:''; display: block; width: 150px; height: 3px; background-color: rgba(255,255,255,1.00); margin: 10px auto 0;}
+
+.page-event-detail .confir-block{padding-left: 100px;}
+.page-event-detail .pane-content .bg-style h3{font-size:1.40rem; line-height: 2.2rem;}
+.view-send-mail table{margin-bottom: 1rem; max-width: 100%;width: 100%;}
+.view-send-mail table > tbody > tr:nth-of-type(odd) {
+  background-color: #f9f9f9;
+}
+/* END Host Dashboard CSS(12/06/2017)*/
+
+//http://local.viamo/user/132/registry/new/gift
+// below CSS is above URL page
+#edit-registry-type {
+    display: none;
+}
+.edit-registry-type{display: none!important;}
+.page-user-registry-new-gift .nav.nav-pills {display: none;}
+.page-user-registry-new-gift .primary-tab {display: none;}
+#edit-registry .form-item.input-field.form-type-item {display: none;}    
+.page-user-registry-new-gift .vertical-tabs-list {display: none;}
+.vertical-tabs ul.vertical-tabs-list{display: none;}*/
+.primary-tab {display: none;}
+.commerce-registry-quantity{ margin-left: 10px;margin-right: -39px;text-align: left;width: 41px;}
+.page-taxonomy-term .form-checkboxes .form-item, .page-taxonomy-term .form-radios .form-item {margin-bottom: 1.4em;margin-top: -3.6em;}
+.page-registry .primary-tab{display: none;}
+.page-store .vertical-tabs ul.vertical-tabs-list {display: block;}   
+    
+
+.view-commerce-cart-form table {width:100%;}    
+.view-commerce-cart-form table,.views-table th,.views-table td {border: 1px solid black;border-collapse: collapse;}        
+.view-commerce-cart-form th,.views-table  td {padding: 5px;text-align: center;}        
+.view-commerce-cart-form table.views-table tr:nth-child(even) {background-color: #eee;}    
+.view-commerce-cart-form table.views-table tr:nth-child(odd) {background-color:#fff;}   
+.view-commerce-cart-form table.views-table th {background-color: black;color: white;}   
+
+.view-commerce-cart-summary table {width:100%;}    
+.view-commerce-cart-summary table,.views-table th,.views-table td {border: 1px solid black;border-collapse: collapse;}        
+.view-commerce-cart-summary th,.views-table  td {padding: 5px;text-align: center;}        
+.view-commerce-cart-summary table.views-table tr:nth-child(even) {background-color: #eee;}    
+.view-commerce-cart-summary table.views-table tr:nth-child(odd) {background-color:#fff;}   
+.view-commerce-cart-summary table.views-table th {background-color: black;color: white;}   
+
+
+.view-commerce-cart-summary table {width:100%;}    
+.view-commerce-cart-summary table,.views-table th,.views-table td {border: 1px solid black;border-collapse: collapse;}        
+.view-commerce-cart-summary th,.views-table  td {padding: 5px;text-align: center;}        
+.view-commerce-cart-summary table.views-table tr:nth-child(even) {background-color: #eee;}    
+.view-commerce-cart-summary table.views-table tr:nth-child(odd) {background-color:#fff;}   
+.view-commerce-cart-summary table.views-table th {background-color: black;color: white;}   
+.checkout_review table {border-collapse: collapse;background-color: transparent;width: 100%;}
+
+
+
+
+    
+    
+    
+    
+    
+
+
+

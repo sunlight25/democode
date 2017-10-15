@@ -1,0 +1,129 @@
+<?php
+
+/**
+ * Implements hook_menu_alter().
+ * 
+ */
+
+function viamo_theme() {
+  return array(
+    'user_profile_form' => array(
+      'render element' => 'form',
+      'template' => 'user-profile-form',
+      'path' => drupal_get_path('theme', 'viamo').'/templates',       
+    ),    
+  );
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+
+function viamouser_menu_alter(&$items) {
+    
+    global $user;    
+    $items['user/%/view']['access callback']       = FALSE;
+    $items['user/%/wishlist']['access callback']   = FALSE;    
+    $items['user/%/hybridauth']['access callback'] = FALSE;
+    $items['user/%/orders']['access callback']     = FALSE;            
+    $items['user/register']['title'] = '';        
+    
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function viamouser_form_user_login_block_alter(&$form, &$form_state, $form_id) {
+    //dpm($form);
+    unset($form['#action']);
+    $form['actions']['submit']['#value'] =t('Sign In');
+    $form['actions']['submit']['#attributes']['class'][] ='btn btn-block';
+    $form['#submit'][] = 'viamo_standard_account_login_redirect';        
+    unset($form['links']['#markup']);    
+    $form['links']['#markup'] = l(t('Request new password'), 'user/password', array('attributes' => array('title' => t('Request new password.'))));           
+}
+
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function viamouser_form_user_register_form_alter(&$form, &$form_state, $form_id) {    
+    global $user;    
+    if($user->uid==0) {
+        $form['actions']['submit']['#value'] =t('SIGN UP NOW');
+        $form['actions']['submit']['#attributes']['class'][] ='btn';            
+    }         
+}
+
+
+function viamouser_auto_placeholders(&$element) {               
+  if ($element['#type'] == 'textfield') {
+    $element['#attributes']['placeholder'] = $element['#title'];
+  }
+  foreach (element_children($element) as $key) {
+    viamouser_auto_placeholders($element[$key]);
+  }
+}
+
+/* 
+ * Implement hook_views_bulk_operations_form_alter();
+ * Below customiztion for Send Invitations to guests by {Standard Account(Host or Guest)} 
+ * Surya Prakash 14/06/2017
+ */
+
+function viamomessage_views_bulk_operations_form_alter(&$form, &$form_state, $vbo) {                 
+  if ($form_state['step'] == 'views_form_views_form') {
+    if($form['#form_id'] == 'views_form_send_mail_page') {
+        isset($form['select']['submit']['#value'])?$form['select']['submit']['#value']=t('Send'):$form['select']['submit']['#value'];        
+    }           
+  } elseif ($form_state['step'] == 'views_bulk_operations_config_form') {
+    if($form['#form_id'] == 'views_form_send_mail_page') {
+        global $user;
+        $form['recipient']['#default_value']='[node:field-email]';                        
+        $form['recipient']['#type']='hidden';        
+    }                      
+  } elseif ($form_state['step'] == 'views_bulk_operations_confirm_form') {
+    // Alter the confirmation step of the VBO form.
+  }  
+}
+
+
+/*  
+ * Remove change edit URL by code in User Profile changes 
+ */
+
+function viamouser_entity_view_alter(&$build, $type) {
+    
+    if($type == 'popup_onload') {                    
+        global $user;                
+        $find='#editLink';               
+        $replace='user/'.$user->uid.'/edit%3Fdestination%3Dhost-dashboard#overlay=user/'.$user->uid.'/edit/main%3Fdestination%3Dhost-dashboard';                
+        $build['body']['0']['#markup'] = str_replace($find, $replace, $build['body']['0']['#markup']);
+    }        
+}                   
+
+
+/*
+ *  Implements hook_form_FORM_ID_alter().  
+ * 
+*/
+
+function viamo_preprocess_user_profile_form(&$variables) {
+      $variables['form']['account']['mail']['#description'] ='';
+      $variables['form']['account']['name']['#description'] ='';
+      $variables['form']['picture']['picture_upload']['#description'] ='';
+      $variables['form']['picture']['picture_delete']['#description'] = '';
+      $variables['form']['overlay_control']['overlay']['#attributes']['class'][] = 'overlay-control-checkbox';
+      //echo "<pre>";     
+      //print_r($variables['form']['overlay_control']['overlay']['#attributes']); exit;      
+}
+
+/*
+ *  Implements hook_form_FORM_ID_alter().  
+ * 
+*/
+function viamouser_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
+    
+            $form['overlay_control']['#prefix']   =  '<div class="overlay-control-checkbox">';     
+            $form['overlay_control']['#suffix']   =  '</div>';                          
+}

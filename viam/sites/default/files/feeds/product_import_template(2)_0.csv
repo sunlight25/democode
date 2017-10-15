@@ -1,0 +1,7 @@
+Product SkU,Product title,Price,Image,Product Gallery
+PR-1,Product One,10,public://feeds/images/3.png,public://feeds/images/3.png#public://feeds/images/4.jpg
+PR-2,Product Two,20,public://feeds/images/4.jpg,public://feeds/images/78.jpg#public://feeds/images/8.png#public://feeds/images/74.png
+PR-3,Product three,35,public://feeds/images/8.jpg,public://feeds/images/78.jpg#public://feeds/images/89.png#public://feeds/images/72.png
+PR-4,Product four,5,public://feeds/images/78.jpg,public://feeds/images/78.jpg#public://feeds/images/89.png#public://feeds/images/72.png
+PR-5,Product five,15,public://feeds/images/8.png,public://feeds/images/78.jpg#public://feeds/images/89.png#public://feeds/images/72.png
+PR-6,Product six,2,public://feeds/images/74.png,public://feeds/images/10.jpg#public://feeds/images/72.png

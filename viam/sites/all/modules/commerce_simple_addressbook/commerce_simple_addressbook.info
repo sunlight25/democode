@@ -1,0 +1,12 @@
+name = Simple Address Book
+description = Provides a simple addressbook.
+core = 7.x
+
+dependencies[] = commerce_customer
+
+; Information added by Drupal.org packaging script on 2016-05-05
+version = "7.x-1.0-alpha1"
+core = "7.x"
+project = "commerce_simple_addressbook"
+datestamp = "1462476553"
+

@@ -1,0 +1,200 @@
+<?php
+
+/**
+ * Commerce add to cart button module
+ */
+ 
+/**
+ *  Implementation of hook_menu()
+ */
+function commerce_atcb_menu() {
+    
+      $items['add_to_cart/%ctools_js/%'] = array(
+        'title' =>'Add to cart',
+        'page callback' => 'commerce_atcb_add_to_cart',
+        'page arguments' => array(1, 2),
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+      );
+      
+      return $items;      
+}
+
+ 
+/**
+ * Add to cart page callback
+ */
+function commerce_atcb_add_to_cart($js, $prod_ids) {    
+  $product_ids = explode('-', $prod_ids);
+  $products = commerce_product_load_multiple($product_ids);
+  $commerce_form_id = commerce_cart_add_to_cart_form_id($product_ids);
+ 
+  $line_item = NULL;
+  if (!empty($products)) {
+    $type = 'product';
+    $line_item = commerce_product_line_item_new(reset($products), 1, 0, array(), $type);
+    $line_item->data['context']['product_ids'] = array_keys($products);
+    $line_item->data['context']['add_to_cart_combine'] = 1;
+//     $line_item->data['context']['show_single_product_attributes'] = 1;
+  }
+ 
+  $view_mode = 'line_item';
+ 
+  //$cart_form = drupal_get_form($commerce_form_id, $line_item, TRUE, array('view_mode' => $view_mode));
+  $form_state = array(
+    'title' => '<h4 class="mb-4"><i class="fa mr-2 fa-shopping-cart v-gold-text" aria-hidden="true"></i>'.t('Add this product to your Cart').'</h4>',
+    'ajax' => $js,
+    're_render' => !$js,
+    'no_redirect' => $js,
+    'commerce_atcb_add_to_cart' => TRUE,
+  );
+  $form_state['build_info']['args'] = array($line_item, TRUE, array('view_mode' => $view_mode)); // fix view_mode pt field
+  $cart_form = drupal_build_form($commerce_form_id, $form_state);  
+  //echo "<pre>";
+  //print_r($cart_form['commerce_registry']); exit;  
+  $cart_form['commerce_registry']['quantity'] = FALSE;
+  //$cart_form['commerce_registry']['registry'] = FALSE;
+  $cart_form['commerce_registry']['add_to_registry'] = FALSE;
+      
+  unset($cart_form['submit']['#prefix']);
+  unset($cart_form['submit']['#suffix']);
+  unset($cart_form['submit']['#attributes']['class']);  
+  unset($cart_form['#prefix']);
+  unset($cart_form['#suffix']);
+  $cart_form['#prefix']='<div class="row col s12">';
+  $cart_form['#suffix'] = '</div>';
+  
+  $cart_form['checkout']['#attributes']['class'][] ='left';
+  $cart_form['submit']['#attributes']['class'][] ='right';  
+  $cart_form['submit']['#prefix']    = '<div class="modal-footer">';
+  $cart_form['checkout']['#suffix'] = '<div class="clearfix"></div></div>';
+  
+  $cart_form['products'] = entity_view('commerce_product', $products, $view_mode/*, $GLOBALS['language']->language, 1*/);    //dpm($cart_form);
+  if (!$js) {
+    return $cart_form;
+  }
+ 
+  ctools_include('modal');
+  ctools_include('ajax');
+  ctools_add_js('ajax-responder');
+ 
+  $commands = ctools_modal_form_render($form_state, $cart_form);
+ 
+  // Handle submitted form.
+  if (!empty($form_state['executed'])) {
+    $commands = array();
+    $commands[] = ctools_modal_command_dismiss();
+    drupal_set_message("Your product added to your cart");    
+ // if ($form_state['values']['op'] == t('Add to cart & checkout')) {
+      $commands[] = ctools_ajax_command_redirect($_GET['destination']);
+//}
+  }
+ 
+  print ajax_render($commands);
+}
+ 
+/**
+ * Implementation of hook_form_BASE_FORM_ID_alter()
+ */
+function commerce_atcb_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state, $form_id) {    
+  if (!isset($form_state['commerce_atcb_add_to_cart'])) {
+    return;
+  }  
+  $form['submit']['#value'] = t('Add and Continue Shopping');
+  $form['checkout'] = array(
+    '#type' => 'submit',
+    '#value' => t('Add and View Cart'),
+    '#weight' => 51,
+//     '#submit' => array('commerce_atcb_add_to_cart_submit'),
+  );
+  $form['#submit'][] = 'commerce_atcb_add_to_cart_submit';
+}
+ 
+/**
+ * Add to cart submit handler
+ */
+function commerce_atcb_add_to_cart_submit($form, &$form_state) {      
+  if ($form_state['values']['op'] != t('Add and View Cart')) return;
+  $form_state['redirect'] = $_GET['destination'] = 'cart';
+}
+ 
+/**
+ * Implements hook_field_formatter_info().
+ */
+function commerce_atcb_field_formatter_info() {    
+  return array(
+    'commerce_atcb_add_to_cart_button' => array(
+      'label' => t('Add to Cart Button'),
+      'description' => t('Display an Add to Cart button for the referenced product.'),
+      'field types' => array('commerce_product_reference'),
+      'settings' => array(
+//         'show_quantity' => FALSE,
+//         'default_quantity' => 1,
+//         'combine' => TRUE,
+//         'show_single_product_attributes' => FALSE,
+//         'line_item_type' => 'product',
+      ),
+    ),
+  );
+}
+ 
+/**
+ * Implements hook_field_formatter_view().
+ */
+function commerce_atcb_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $settings = array_merge(field_info_formatter_settings($display['type']), $display['settings']);
+  $result = array();
+ 
+  if ($display['type'] == 'commerce_atcb_add_to_cart_button') {
+ 
+    // Collect the list of product IDs.
+    $product_ids = array();
+ 
+    foreach ($items as $delta => $item) {
+      $product_ids[] = $item['product_id'];
+    }
+ 
+    ctools_include('ajax');
+    ctools_include('modal');
+    drupal_add_js(array(
+      'cart-button-popup' => array(
+        'modalSize' => array(
+          'type' => 'fixed',
+          'width' => 550,
+          'height' => 300,
+        ),
+        'modalOptions' => array(
+          'opacity' => 0.55,
+          'background' => '#000',
+        ),
+        'animation' => 'fadeIn',
+        'throbber' => '',//theme('image', array('path' => ctools_image_path('loading_animation.gif', 'modal_forms'), 'alt' => t('Loading...'), 'title' => t('Loading'))),
+        'closeText' => '',//t('Close'),
+      ),
+    ), 'setting');
+ 
+    // Add CTools' javascript to the page.
+    ctools_modal_add_js();
+    $button_text = t('Add to cart');
+    $button_url = 'add_to_cart/nojs/' . implode('-', $product_ids);
+    $result[] = l($button_text, $button_url, array(
+      'attributes' => array('class' => array('ctools-use-modal', 'ctools-modal-cart-button-popup'), 'title' => $button_text),
+      'query' => array('destination' => $_GET['q']),
+    ));
+  }
+  $element[0]['#markup'] = $result[0]; // Assign it to the #markup of the element
+ //print_r($result); exit;
+  return $element;;
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function commerce_atcb_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'commerce_atcb') . '/views',
+  );
+}
+
+

@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * Implementation of hook_init()
+ * If overlay.module is enabled, make sure that our hook_install messages are displayed
+ */
+function viamomessage_init() {                      
+  //echo $_GET['q']; exit;  
+  if($_GET['q']=='vendor-dashboard') {
+    if (!module_exists('overlay') || (!is_array($_SESSION))) {         
+      return;
+    }
+    $i=0;
+    if ((array_key_exists('ucberkeley_cas_install_messages', $_SESSION)) && (!array_key_exists('messages', $_SESSION))) {               
+          foreach ($_SESSION['ucberkeley_cas_install_messages']['status'] as $msg) {        
+            drupal_set_message($msg);
+            if($i==0) {
+               break; 
+            } else{
+               $i++; 
+            }
+
+          }
+          unset($_SESSION['ucberkeley_cas_install_messages']);                       
+    }
+   if(isset($_SESSION['messages'])) {
+    if ((is_array($_SESSION['messages']))) {                
+          $_SESSION['ucberkeley_cas_install_messages'] = $_SESSION['messages'];    
+    }  
+   }
+  }
+}
+

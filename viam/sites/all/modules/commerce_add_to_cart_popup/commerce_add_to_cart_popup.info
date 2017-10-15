@@ -1,0 +1,18 @@
+name = Commerce add to cart popup
+description = Provides an "add to cart" popup screen with text box of quantity .this is implemented on product reference field.
+core = 7.x
+package = Commerce (Contrib)
+dependencies[] = commerce
+dependencies[] = commerce_checkout
+dependencies[] = commerce_line_item
+dependencies[] = commerce_order
+dependencies[] = commerce_product
+dependencies[] = commerce_product_pricing
+dependencies[] = commerce_product_reference
+dependencies[] = entity
+dependencies[] = ctools
+files[] = views/commerce_add_to_cart_popup_field_handler_add_to_cart_btn.inc
+
+
+
+

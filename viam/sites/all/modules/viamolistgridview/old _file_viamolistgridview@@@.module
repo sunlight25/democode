@@ -1,0 +1,235 @@
+<?php
+/**
+ * Implements hook_init().
+ *  
+ */  
+function viamolistgridview_init() {                
+    if(arg(0)=='changeview-style') {
+        //variable_set('class-gird-list', '');               
+    } else {
+        if(arg(0)=='wedding-venues') {                       
+            if(!(isset($_SESSION['view-change-flg']) && $_SESSION['view-change-flg']=='Yes')) {
+                $_SESSION['listView']='hidden';
+                $_SESSION['active-list-view']=' ';
+                $_SESSION['active-grid-view']='active';   
+            }                                    
+        }        
+    }   
+}
+
+/**
+ * Implements hook_block_info().
+ *  
+ */
+function viamolistgridview_block_info() {    
+  $blocks['list_and_grid'] = array(    
+    'info' => t('View Listing Grid And List'),
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ *  
+ */
+
+function viamolistgridview_block_view($delta = '') {
+  // The $delta parameter tells us which block is being requested.
+  switch ($delta) {
+    case 'list_and_grid':     
+        if(function_exists('ajax_link_page')) {                                 
+            $GridListLink = ajax_link_page();    
+           
+            $block['subject'] = t('List and gird view');    
+            $block['content'] = '';   
+            $block['content'] =  drupal_get_form('viamolistgridview_my_form');;    
+        } else {
+            $block['content'] = '';    
+        }
+       break;    
+   }
+  return $block;
+}
+/**
+ * Implements hook_menu().
+ *  
+ */      
+function viamolistgridview_menu() {             
+  $items['ajax-changeview'] = array(
+    'title' => 'Ajax Test',
+    'type' => MENU_NORMAL_ITEM,
+    'page callback' => 'ajax_link_page',
+    'access arguments' => array('access content'),
+  );
+ 
+  $items['changeview-style/%/%'] = array(
+    'title' => 'Ajax test callback',
+    'type' => MENU_CALLBACK,
+    'page callback' => 'ajax_link_callback',
+    'page arguments' => array(1,2),
+    'access arguments' => array('access content'),
+  );
+  
+  $items['my_module/form'] = array(
+    'title' => t('My form'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('viamolistgridview_my_form'),
+    'access arguments' => array('access content'),
+    'description' => t('My form'),
+    'type' => MENU_CALLBACK,
+  );
+    return $items;
+}  
+
+/**
+ * Ajax callback to display Toggle List And Grid View data listing.
+ */
+
+function ajax_link_callback($ajax,$type) {           
+   $_SESSION['class-gird-list']=$type;
+   $_SESSION['view-change-flg'] = 'Yes';
+   if ($type=='list') {             
+       $_SESSION['girdView']='hidden';
+       $_SESSION['listView']='display';       
+       $_SESSION['active-grid-view']='';
+       $_SESSION['active-list-view']='active';              
+   }
+   if ($type=='grid') {             
+        $_SESSION['girdView']='display';
+        $_SESSION['listView']='hidden';       
+        $_SESSION['active-grid-view']='active';
+        $_SESSION['active-list-view']='';              
+   }     
+   
+  drupal_add_js(array('FilterOpenStatus'=> 'NO'), 'setting');
+   
+  $time='';
+  if ($ajax == 'ajax') {
+    $commands = array();
+    // Ajax command to replace the #ajax-display element with the current time.
+    $commands[] = ajax_command_replace('#ajax-display', "<div id='ajax-display'>" . $time . "</div>");            
+    // Add a visual "changed" marker to the '#ajax-display' element.
+    $commands[] = ajax_command_changed('#ajax-display');        
+    //$commands[] = ajax_command_invoke('.products', 'addClass', array('list'));
+    $commands[] = ajax_command_invoke('.view-id-viamo_venues', 'trigger', array('RefreshView'));
+    $commands[] = ajax_command_invoke('#views-exposed-form-viamo-venues-page', 'clearForm');   
+    
+   // $commands[] = ajax_command_replace('#ajax-link-grid', "<div id='ajax-link-grid'>" . $time . "</div>");    
+    ajax_deliver(array('#type' => 'ajax', '#commands' => $commands));
+  }
+  else {
+    // No ajax, just replace the html.
+    return array(
+      '#markup' => $time,
+    );
+  }
+}
+
+
+/**
+ * Callback function that displays Grid And List View Toggle Button .
+ */
+function ajax_link_page() {    
+  $gridImage = drupal_get_path('theme', 'viamo')."/img/grid-view.png";
+  $gridList = '<img src="'.$gridImage.'" alt="Grid">'; 
+  
+  $ListImage = drupal_get_path('theme', 'viamo')."/img/list-view-active.png";
+  $List = '<img src="'.$ListImage.'" alt="Grid">'; 
+  
+  $gridAndList=array();
+  /*$gridAndList[]= array(
+    '#type' => 'link',
+    '#title' => $List.'<i class="mdi-set mdi-view-list"></i>',
+    '#href' => 'changeview-style/nojs/list',
+    '#prefix' => '<div id="ajax-link">',
+    '#suffix' => '</div><div id="ajax-display"></div>',
+    '#ajax' => array(
+      'effect' => 'fade',
+       'progress' => array('type' => 'none'), 
+    ),
+    '#options' => array(      
+      'attributes' => array('class'=>array($_SESSION['active-list-view'])),       
+      'html' => true,
+   ),  
+      
+  );
+  $gridAndList[]= array(
+    '#type' => 'link',
+    '#title' => $gridList.'<i class="mdi-set mdi-view-module"></i>',
+    '#href' => 'changeview-style/nojs/grid',
+    '#prefix' => '<div id="ajax-link-grid">',
+    '#suffix' => '</div><div id="ajax-display-grid"></div>',
+    '#ajax' => array(
+      'effect' => 'fade',
+      'progress' => array('type' => 'none'), 
+    ),
+    '#options' => array(       
+       'attributes' => array('class'=>array($_SESSION['active-grid-view'])),       
+       'html' => true,
+    ),  
+  );  */
+  
+    $form['progress_indicator'] = array(  
+        '#type' => 'checkboxes',
+        '#options' => drupal_map_assoc(array(t('SAT'), t('ACT'))),
+        '#title' => t('What standardized tests did you take?'), 
+    );
+  return drupal_render($form['progress_indicator']);  
+}
+
+/**
+ * Display the view as an HTML list element
+ * Below function use for override view list view classes
+*/
+
+function viamolistgridview_preprocess_views_view_list(&$vars) {
+  $handler  = $vars['view']->style_plugin;
+
+  $class = explode(' ', $handler->options['class']);
+  $class = array_map('views_clean_css_identifier', $class);
+
+  $wrapper_class = explode(' ', $handler->options['wrapper_class']);
+  $wrapper_class = array_map('views_clean_css_identifier', $wrapper_class);
+
+  $vars['class'] = implode(' ', $class);
+  $vars['wrapper_class'] = implode(' ', $wrapper_class);
+  $vars['wrapper_prefix'] = '';
+  $vars['wrapper_suffix'] = '';  
+  $listgridCls = (isset($_SESSION['class-gird-list'])) ? $_SESSION['class-gird-list'] : '';
+  $vars['list_type_prefix'] = '<'.$handler->options['type'].' class="'.$listgridCls.'">';
+  $vars['list_type_suffix'] = '</'.$handler->options['type'].'>';
+  if ($vars['wrapper_class']) {
+    $vars['wrapper_prefix'] = '<div class="' . $vars['wrapper_class'] . '">';
+    $vars['wrapper_suffix'] = '</div>';
+  }
+  
+  if ($vars['class']) {
+    $vars['list_type_prefix'] = '<' . $handler->options['type'] . ' class="' . $vars['class'] . ' '.$listgridCls.'">';
+  }
+  template_preprocess_views_view_unformatted($vars);
+}
+
+
+
+/** 
+ * This function is called the "form builder". It builds the form.
+ */
+function viamolistgridview_my_form($form, &$form_state) {     
+   $form['#attributes']['class'] = 'form-inline py-3';    
+   $active = array(0 => t('Closed'), 1 => t('Active'));
+   $form['inlineRadioOptions'] = array(
+    '#type' => 'radios',
+    '#title_display' =>'before',
+    '#title' => t('Display'),
+    //'#default_value' => isset($node->active) ? $node->active : 1,
+    '#options' => $active,  
+    '#prefix' => '<div class="mr-sm-2">',
+    '#suffix' => '</div>'
+  );  
+  return $form;  
+}
+
+//https://api.drupal.org/api/drupal/includes%21form.inc/function/theme_form_element/7.x    
+
+?>
+

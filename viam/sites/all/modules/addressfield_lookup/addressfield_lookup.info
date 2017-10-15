@@ -1,0 +1,21 @@
+name = Address Field Lookup
+description = Provides an abstracted API for providing address field lookup services.
+package = Address Field Lookup
+core = 7.x
+configure = admin/config/regional/addressfield-lookup
+
+files[] = addressfield_lookup.interface.inc
+files[] = tests/AddressFieldLookupWebTestBase.test
+files[] = tests/AddressFieldLookupWebTest.test
+files[] = tests/AddressFieldLookupAdminWebTest.test
+files[] = tests/AddressFieldLookupFieldTest.test
+
+dependencies[] = addressfield
+dependencies[] = ctools
+
+; Information added by Drupal.org packaging script on 2016-08-30
+version = "7.x-2.19"
+core = "7.x"
+project = "addressfield_lookup"
+datestamp = "1472591640"
+

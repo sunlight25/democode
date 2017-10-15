@@ -1,0 +1,194 @@
+<?php
+/**
+ * Implements hook_theme().
+*/
+
+function viamo_standard_account_menu_alter(&$items) {      
+  $items['host']['type'] = MENU_CALLBACK;
+  $items['host/register']['type'] = MENU_CALLBACK;
+  $items['host/password']['type'] = MENU_CALLBACK;
+  $items['user']['type'] = MENU_CALLBACK;
+  $items['user/register']['type'] = MENU_CALLBACK;
+  $items['user/password']['type'] = MENU_CALLBACK;
+  
+  return $items;
+}
+/**
+ * Implements hook_theme().
+ */
+function viamo_standard_account_theme() {   
+      $items = array();  
+      $items['user_register_form'] = array(
+          'render element' => 'form',
+          'path' => drupal_get_path('theme','viamo').'/templates',
+          'template' => 'standard-account-user-register',
+      );
+      
+      $items['event_calendar_node_form'] = array(
+         'arguments' => array(
+          'form' => NULL,
+      ),
+         'template' => 'event_calendar-node-form',
+         'path' => drupal_get_path('theme','viamo').'/templates',
+         'render element' => 'form',
+      );                                        
+     return $items;
+}
+
+/*
+ * Implement hook_Form_ID_alter() 
+ */
+
+function viamo_standard_account_form_user_register_form_alter(&$form, &$form_state) {               
+    
+    if(isset($form['profile_main'])) {  
+        $profileLanuage=$form['profile_main']['field_suffix_host']['#language'];                                    
+        $form['profile_main']['field_partners_suffix'][$profileLanuage][0]['value']['#title'] = t('Suffix');
+        $form['profile_main']['field_partners_first_name'][$profileLanuage][0]['value']['#title'] = t('First Name');
+        $form['profile_main']['field_partners_last_name'][$profileLanuage][0]['value']['#title'] = t('Last Name');
+        $form['profile_main']['field_partners_email'][$profileLanuage][0]['value']['#title'] = t('Email Address');
+        $form['profile_main']['field_partners_type'][$profileLanuage][0]['value']['#title'] = t('Email Address');               
+        $form['field_first_name'] ['#access'] = FALSE;
+        $form['field_lastname'] ['#access'] = FALSE;    
+        $form['field_suffix'] ['#access'] = FALSE;    
+        
+    }         
+    $form['account']['pass']['#process'] = array('form_process_password_confirm', 'viamo_standard_account_process_password_confirm', 'user_form_process_password_confirm');
+    
+
+    //['#attributes'] = array('class'=>array('form-control'),'placeholder' => t('Enter Password'));        
+    $form['account']['mail']['#description']='';
+    $form['account']['mail']['#title'] = t('Email Address');
+    if(isset($form_state['profiles']) && $form_state['profiles']){      
+            $form['#submit'][] = 'standard_account_form_submit_handler';
+    }  
+}
+
+
+/*
+ * Implement hook_Form_ID_alter()  
+ */
+
+function viamo_standard_account_process_password_confirm($element) {
+    //$element['pass1']['#title']['#title_display'] = 'invisible';
+    //$element['pass2']['#title']['#title_display'] = 'invisible';
+    //$element['pass1']['#attributes'] = array('class'=>array('form-control'),'placeholder' => $element['pass1']['#title'].'*');    
+    //$element['pass2']['#attributes'] = array('class'=>array('form-control'),'placeholder' => $element['pass2']['#title'].'*');
+    //unset($element['pass1']['#title']);
+    //unset($element['pass2']['#title']);
+   // echo "<br/>";
+    return $element;
+}
+
+/*
+ * Implement hook_Form_ID_alter()  
+ * Here We are getting event details
+ */
+
+function viamo_standard_account_get_nid_by_host_id($event_host_id) {
+       $returndata='0';
+       $event_host_id=trim($event_host_id);
+       if (!empty($event_host_id)) {
+            $query = db_select('node', 'n');
+            $query->join('field_data_field_host_name', 'event', 'n.nid = event.entity_id');
+            $query->fields('n', array('nid'))
+                    ->condition('event.field_host_name_target_id', $event_host_id,'=')
+                    ->condition('n.type', 'event_calendar','=')
+                    ->condition('n.status', 1, '=');
+            $result = $query->execute();
+            if(!empty($result)){
+                foreach ($result as $record) {
+                    $returndata=$record->nid;
+                }
+            }
+       }
+       return $returndata;
+       exit;
+}
+
+
+/**
+ * Implements hook_field_widget_form_alter().
+ *
+ * Use the right form elements identifiers needed for "#limit_validation_errors"
+ * : "Postcode" & "House number or name" only, on "Find address" button element.
+ *
+ * @see https://drupal.org/node/2189327
+ */
+function viamo_standard_account_field_widget_form_alter(&$element, &$form_state, $context) {    
+   //Only apply for address field lookup.       
+  if ($context['field']['type'] == 'addressfield' && !empty($element['addressfield_lookup_find_address'])) {     
+            
+    $element['country']['#prefix'] = '<label>Choose Country</label>';
+    // Parents array of an addressfield element in a entity form.
+    $array_parents = array(
+      $context['field']['field_name'],
+      $context['langcode'],
+      $context['delta'],
+    );
+
+    // Parents array of an addressfield element for the entire built form.
+    $array_parents = array_merge($context['form']['#parents'], $array_parents);
+
+    // Get the house number and postal code fields.
+    $addressfield_lookup_house_number = array_merge($array_parents, array('addressfield_lookup_house_number'));
+    $addressfield_lookup_postal_code = array_merge($array_parents, array('addressfield_lookup_postal_code'));
+
+    // Set the limit_validation_errors element.
+    $element['addressfield_lookup_find_address']['#limit_validation_errors'] = array($addressfield_lookup_postal_code, $addressfield_lookup_house_number);
+  }
+      
+  //
+  if(isset($context['form'])){
+    if($context['field']['type'] ==  'datetime' &&  $context['form']['#node']->type =='event_calendar') {
+          _form_set_class($element, array('col','s5','input-field'));                
+          $element['#title'] = t('Occasion Date');
+          unset($element['#columns'][1]);        
+          unset($element['#description']);        
+          unset($element['#default_value']['value2']);        
+          unset($element['#date_items']['value2']);        
+          $element['#date_is_default'] = 0;                          
+    }
+  }
+}
+
+function standard_account_form_submit_handler(&$form, &$form_state) {
+     global $user;               
+     if (in_array('Standard Account(Host or Guest)', $user->roles)) {               
+      $uid=$user->uid;      
+      //below use for checking this user evernt added or not 
+      $nid = viamo_standard_account_get_nid_by_host_id($uid);                   
+      if($nid>0) {
+        $form_state['redirect'] = 'standard-dash'; 
+      } else {
+        $form_state['redirect'] = 'node/add/event-calendar';             
+      }       
+   }
+}
+
+
+/*
+ * Implement hook_Form_ID_alter() 
+ */
+
+function viamo_standard_account_form_alter(&$form, &$form_state, $form_id) {
+  switch ($form_id) {
+    case 'user_login' :
+        $form['#submit'][] = 'viamo_standard_account_login_redirect';
+    break;
+    }  
+}
+
+
+function viamo_standard_account_login_redirect(&$form, &$form_state) {
+    global $user;           
+     if (in_array('Standard Account(Host or Guest)', $user->roles) || in_array(5, array_values($user->roles), TRUE)) {         
+        $uid = $user->uid;        
+        $nid = viamo_standard_account_get_nid_by_host_id($uid);                           
+        if($nid>0) {
+          $form_state['redirect'] = 'standard-dash'; 
+        } else {                       
+            $form_state['redirect'] = 'node/add/event-calendar';                                    
+        }      
+     } 
+}

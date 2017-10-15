@@ -1,0 +1,55 @@
+div.commerce-registry {
+  border: solid 1px #ccc;
+  padding: 10px;
+  -moz-borderradius: 8px;
+  border-radius: 8px;
+  margin: 5px;
+}
+
+div.commerce-registry .registry-info {
+  width: 75%;
+}
+
+div.commerce-registry form,
+div.commerce-registry form div,
+div.commerce-registry .registry-info,
+div.commerce-registry .registry-product,
+div.commerce-registry .registry-product-info,
+div.commerce-registry .registry-product-info .field-items,
+div.commerce-registry .registry-product-info .field-label {
+  vertical-align: top;
+  display: inline-block;
+}
+
+div.commerce-registry .field-label,
+div.commerce-registry .field-items {
+  margin-right: 4px;
+}
+
+div.commerce-registry .registry-info .registry-name {
+  font-size: 1.1em;
+}
+
+div.commerce-registry .registry-product {
+  width: 80%;
+  padding: 5px;
+  margin: 10px;
+  border-top: solid 1px #ccc;
+}
+
+div.commerce-registry .registry-owner {
+  font-style: italic;
+}
+
+div.commerce-registry .registry-product .field-type-commerce-price,
+div.commerce-registry .registry-product .product-message,
+div.commerce-registry .registry-product .product-quantity,
+div.commerce-registry .registry-product .product-title {
+  vertical-align: top;
+  display: inline-block;
+  width: 20%;
+}
+
+div.commerce-registry .registry-product .product-title {
+  width: 40%;
+}

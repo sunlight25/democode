@@ -1,0 +1,4 @@
+name = Viamo access denied
+description = On access denied redirect to 404 page. 
+core = 7.x
+package = z

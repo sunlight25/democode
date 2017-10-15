@@ -1,0 +1,26 @@
+/* CSS Document */
+/* Extra small devices (portrait phones, less than 544px) */
+/* No media query since this is the default in Bootstrap
+
+/* Small devices (landscape phones, 544px and up) */
+@media (min-width: 544px) {}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+
+	.column { display:inline-block; float: left; }
+	.col-2 { width:16.666%;}
+	.col-4 { width:33.333%;}
+	.col-6 { width:50%;}
+	
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+	
+	#site_header .masthead { position:relative; padding-bottom:33px}
+	#site_header .masthead ul.shopping-menu li a span { display: inline-block}
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {}

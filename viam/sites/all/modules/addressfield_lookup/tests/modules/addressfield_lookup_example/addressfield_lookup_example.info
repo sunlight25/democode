@@ -1,0 +1,14 @@
+name = Address Field Lookup Example
+description = Provides an example address field lookup service.
+package = Address Field Lookup
+core = 7.x
+files[] = addressfield_lookup_example.inc
+
+dependencies[] = addressfield_lookup
+
+; Information added by Drupal.org packaging script on 2016-08-30
+version = "7.x-2.19"
+core = "7.x"
+project = "addressfield_lookup"
+datestamp = "1472591640"
+

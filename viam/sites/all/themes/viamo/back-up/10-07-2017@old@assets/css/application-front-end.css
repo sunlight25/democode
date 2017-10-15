@@ -1,0 +1,327 @@
+/* Styles */
+
+#page_content { overflow: hidden }
+
+.slide-1 { background: url(../img/slides/slide-1-bg.jpg) no-repeat center; background-size: cover }
+.slide-2 { background: url(../img/slides/slide-2-bg.jpg) no-repeat center; background-size: cover }
+.slide-3 { background: url(../img/slides/slide-3-bg.jpg) no-repeat center; background-size: cover }
+
+.content-bottom { position: absolute; left: 0; right: 0; bottom: 200px}
+.content-bottom-left { position: absolute; left: 200px; right: 0; bottom: 200px}
+.content-bottom-right { position: absolute; left: 0; right: 200px; bottom: 200px}
+
+#hero_slider .text-content { padding-top: 200px }
+#hero_slider .text-content h1,
+#hero_slider .text-content h2,
+#hero_slider .text-content p { color: rgba(255,255,255,1.00); text-shadow: 0 0 25px #000000; }
+
+#hero_title { background-color: #3e454f; padding: 30px 0 40px; }
+#hero_title h1 { text-transform:uppercase}
+#hero_title h1:after { content: ''; display: block; width: 150px; height: 3px; background-color: rgba(255,255,255,1.00); margin: 10px auto 0; }
+
+
+.panel-title { background-color: #ac7b32; padding: 10px 20px; margin-bottom: 15px }
+.panel.boxed { background-color: #ebeced; padding: 20px; margin-bottom: 15px }
+.bg-white { background-color: rgba(255,255,255,1.00) }
+
+
+
+.product-item { margin-bottom: 40px; text-align: center }
+.product-item img { margin-bottom: 10px }
+.product-item .buttons-block { padding: 7.5px 0; margin: 0 auto; display: block; text-align: center }
+.product-item .buttons-block .buttons { display: inline-block; border-radius: 3px !important; border: 1px solid rgba(232,232,232,1.00); position: relative; overflow: hidden }
+.product-item .buttons-block .buttons a { font-size: 10px; text-transform: uppercase; font-weight: 900; padding: 5px 10px; display: inline-block; float: left; position: relative }
+.product-item .buttons-block .buttons a:hover { text-decoration: none }
+.product-item .buttons-block .buttons a.left { color: #3e454f }
+.product-item .buttons-block .buttons a.right { color: #b28649 }
+.product-item .buttons-block .buttons a.left:after { content: ''; width: 1px; height: 100%; display: inline-block; background-color: rgba(232,232,232,1.00); position: absolute; right: -1px; top: 0; }
+.product-item .buttons-block .buttons a.left:hover { color: rgba(62,69,79,0.6); }
+.product-item .buttons-block .buttons a.right:hover { color: rgba(178,134,73,0.6); }
+.product-item span.more-info { display: block; line-height: 0.8rem }
+.price { font-size: 14px; color: #3e454f; font-weight: 700; }
+.product-title-area { padding: 30px 0 }
+.product-title-area h3.item-name { margin: 0 0 10px; padding: 0; font-size: 30px; line-height: 30px; font-weight: 100 }
+.product-title-area h2.vendor { margin: 0 0 10px; padding: 0; font-size: 20px; line-height: 20px; text-transform: uppercase; font-weight: 700; }
+.product-title-area p span { font-style: italic; font-size: 20px }
+button.add-to-cart {  text-transform: uppercase; font-size: 10px; font-weight: 700;  }
+
+
+.form-control { font-family: 'neris'; border: 0.5px solid #3e454f; }
+.venue-item { margin-bottom: 40px; position: relative }
+.venue-item .item-name { font-weight: 900; letter-spacing: 0.1em }
+.vv { position: absolute; top: -5px; right: -5px; height: 35px; width: 35px; background: url(../img/vv.png) no-repeat center; background-size: 15.5px 22px; background-color: #000000; z-index: 10 }
+.search-filter { background-color: #EDEDED }
+.item-image { position: relative; margin-bottom: 10px; z-index: 9 }
+.item-image img { margin-bottom: 0 }
+.item-image div { background-color: rgba(62,69,79,0); position: absolute; top: 30px; bottom: 30px; left: 30px; right: 30px; opacity: 0; padding-top: 20%; -webkit-transition: all 0.4s ease-in-out; -moz-transition: all 0.4s ease-in-out; -ms-transition: all 0.4s ease-in-out; -o-transition: all 0.4s ease-in-out; transition: all 0.4s ease-in-out; text-align: center }
+.item-image div span { display: block }
+.item-image div .title { text-align: center; color: rgba(255,255,255,1.00); font-size: 14px; font-weight: 100; font-style: italic; margin-bottom: 30px; opacity: 0 }
+.item-image div .sub-title { text-align: center; color: rgba(255,255,255,1.00); font-size: 12px; font-weight: 700; text-transform: uppercase; display: inline-block; border-top: 3px solid #fff; padding-top: 5px; opacity: 0; letter-spacing: 0.2em; }
+.item-image:hover div .title,
+.item-image:hover div .sub-title { opacity: 1 }
+.item-image:hover div { background-color: rgba(62,69,79,0.8); opacity: 1; top: 0; bottom: 0; left: 0; right: 0; }
+.background-1 { position: relative; background-color: transparent; }
+.background-1:before { content: ""; position: absolute; background: url(../img/screenshots_bg.jpg) no-repeat; width: 1200px; height: 1200px; background-size: contain; z-index: -1 }
+.background-1.bg-left:before { right: 50%; top: -75%; }
+.background-1.bg-right:before { left: 50%; top: -45%; }
+.list-ticks li { list-style: none; margin-bottom: 5px; }
+.list-ticks li:before { content: ''; display: inline-block; height: 1rem; width: 32px; background-image: url(../img/tick.png); background-size: contain; background-repeat: no-repeat; }
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active { border: none; background-color: transparent }
+.btn-viamo { background-color: rgba(40,48,58,0.6); border-color: #ffffff; color: #ffffff; padding: 0 20px; text-transform: uppercase; font-size: 12px }
+.btn-viamo:hover { background-color: rgba(40,48,58,1.00); color: #ffffff; }
+.card-nutral { background-color: #f4f4f4 }
+.bg-style:before { position: absolute; background-color: #eaeaea; content: ""; top: 0; bottom: -420px; left: 0; display: block; right: 0; width: 300%; z-index: -1 }
+.t-bg { background: url(../img/title-area-bg.jpg) no-repeat; background-size: cover; background-position: center }
+.dashboard-menu { position: relative; display: block; background-color: #3e454f; padding: 15px 0px; font-family: 'neris'; }
+.dashboard-menu ul { }
+.dashboard-menu ul li { margin: 0 15px }
+.dashboard-menu ul li a { color: #fff }
+.profile { position: absolute; top: -12px; display: inline-block; overflow: hidden; box-sizing: border-box; width: 25px; height: 25px; margin: 0; border: 1px solid #fff; border-radius: 50%; }
+.profile-avatar { display: block; width: 100%; height: auto; border-radius: 50%; }
+.profile-inline { position: relative; top: 0; display: inline-block; }
+.profile-inline ~ .card-title { display: inline-block; margin-left: 4px; vertical-align: top; }
+.text-bold { font-weight: 700; }
+.meta { font-size: 1em; color: rgba(0, 0, 0, .4); }
+.meta a { text-decoration: none; color: rgba(0, 0, 0, .4); }
+.meta a:hover { color: rgba(0, 0, 0, .87); }
+.table-definition thead th:first-child { pointer-events: none; background: white; border: none; }
+.table td { vertical-align: middle; }
+.page-item > * { border: none; }
+.custom-checkbox { min-height: 1rem; padding-left: 0; margin-right: 0; cursor: pointer; }
+.custom-checkbox .custom-control-indicator { content: ""; display: inline-block; position: relative; width: 30px; height: 10px; background-color: #818181; border-radius: 15px; margin-right: 10px; -webkit-transition: background .3s ease; transition: background .3s ease; vertical-align: middle; margin: 0 16px; box-shadow: none; }
+.custom-checkbox .custom-control-indicator:after { content: ""; position: absolute; display: inline-block; width: 18px; height: 18px; background-color: #f1f1f1; border-radius: 21px; box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4); left: -2px; top: -4px; -webkit-transition: left .3s ease, background .3s ease, box-shadow .1s ease; transition: left .3s ease, background .3s ease, box-shadow .1s ease; }
+.custom-checkbox .custom-control-input:checked ~ .custom-control-indicator { background-color: #84c7c1; background-image: none; box-shadow: none !important; }
+.custom-checkbox .custom-control-input:checked ~ .custom-control-indicator:after { background-color: #84c7c1; left: 15px; }
+.custom-checkbox .custom-control-input:focus ~ .custom-control-indicator { box-shadow: none !important; }
+
+/*
+I wanted to go with a mobile first approach, but it actually lead to more verbose CSS in this case, so I've gone web first. Can't always force things...
+
+Side note: I know that this style of nesting in SASS doesn't result in the most performance efficient CSS code... but on the OCD/organizational side, I like it. So for CodePen purposes, CSS selector performance be damned.
+*/
+/* Global settings */
+/* Global "table" column settings */
+.product-image {
+  float: left;
+  width: 10%;
+	padding-right: 20px
+}
+
+.product-details {
+  float: left;
+  width: 47%;
+}
+
+.product-price {
+  float: left;
+  width: 12%;
+}
+
+.product-quantity {
+  float: left;
+  width: 10%;
+}
+
+.product-removal {
+  float: left;
+  width: 9%;
+}
+
+.product-line-price {
+  float: left;
+  width: 12%;
+  text-align: right;
+}
+
+/* This is used as the traditional .clearfix class */
+.group:before, .shopping-cart:before, .column-labels:before, .product:before, .totals-item:before,
+.group:after,
+.shopping-cart:after,
+.column-labels:after,
+.product:after,
+.totals-item:after {
+  content: '';
+  display: table;
+}
+
+.group:after, .shopping-cart:after, .column-labels:after, .product:after, .totals-item:after {
+  clear: both;
+}
+
+.group, .shopping-cart, .column-labels, .product, .totals-item {
+  zoom: 1;
+}
+
+/* Apply clearfix in a few places */
+/* Apply dollar signs */
+.product .product-price:before, .product .product-line-price:before, .totals-value:before {
+  content: '$';
+}
+
+
+
+.shopping-cart {
+  margin-top: -45px;
+}
+
+/* Column headers */
+.column-labels label {
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+.column-labels .product-image, .column-labels .product-details, .column-labels .product-removal {
+  text-indent: -9999px;
+}
+
+/* Product entries */
+.product {
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+.product .product-image {
+  text-align: center;
+}
+.product .product-image img {
+  width: 100%;
+}
+.product .product-details .product-title {
+  margin-right: 20px;
+  font-family: "HelveticaNeue-Medium", "Helvetica Neue Medium";
+}
+.product .product-details .product-description {
+  margin: 5px 20px 5px 0;
+  line-height: 1.4em;
+}
+.product .product-quantity input {
+  width: 40px;
+}
+.product .remove-product {
+  border: 0;
+  padding: 4px 8px;
+  background-color: #c66;
+  color: #fff;
+  font-family: "HelveticaNeue-Medium", "Helvetica Neue Medium";
+  font-size: 12px;
+  border-radius: 3px;
+}
+.product .remove-product:hover {
+  background-color: #a44;
+}
+
+/* Totals section */
+.totals .totals-item {
+  float: right;
+  clear: both;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.totals .totals-item label {
+  float: left;
+  clear: both;
+  width: 79%;
+  text-align: right;
+}
+.totals .totals-item .totals-value {
+  float: right;
+  width: 21%;
+  text-align: right;
+}
+.totals .totals-item-total {
+  font-family: "HelveticaNeue-Medium", "Helvetica Neue Medium";
+}
+
+.checkout {
+  float: right;
+  border: 0;
+  margin-top: 20px;
+  padding: 6px 25px;
+  background-color: #6b6;
+  color: #fff;
+  font-size: 25px;
+  border-radius: 3px;
+}
+
+.checkout:hover {
+  background-color: #494;
+}
+
+/* Make adjustments for tablet */
+@media screen and (max-width: 650px) {
+  .shopping-cart {
+    margin: 0;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+  }
+
+  .column-labels {
+    display: none;
+  }
+
+  .product-image {
+    float: right;
+    width: auto;
+  }
+  .product-image img {
+    margin: 0 0 10px 10px;
+  }
+
+  .product-details {
+    float: none;
+    margin-bottom: 10px;
+    width: auto;
+  }
+
+  .product-price {
+    clear: both;
+    width: 70px;
+  }
+
+  .product-quantity {
+    width: 100px;
+  }
+  .product-quantity input {
+    margin-left: 20px;
+  }
+
+  .product-quantity:before {
+    content: 'x';
+  }
+
+  .product-removal {
+    width: auto;
+  }
+
+  .product-line-price {
+    float: right;
+    width: 70px;
+  }
+}
+/* Make more adjustments for phone */
+@media screen and (max-width: 350px) {
+  .product-removal {
+    float: right;
+  }
+
+  .product-line-price {
+    float: right;
+    clear: left;
+    width: auto;
+    margin-top: 10px;
+  }
+
+  .product .product-line-price:before {
+    content: 'Item Total: $';
+  }
+
+  .totals .totals-item label {
+    width: 60%;
+  }
+  .totals .totals-item .totals-value {
+    width: 40%;
+  }
+}
+
+

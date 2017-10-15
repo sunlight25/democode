@@ -1,0 +1,27 @@
+<?php
+/**
+ * Implements hook_views_api().
+ * 
+ */
+function viamogift_purchased_views_api() {
+    return array(
+        'api' => 3,
+        'path' => drupal_get_path('module','viamogift_purchased'). '/views',
+    );    
+}
+
+/**
+ * Implements hook_entity_access_query_alter().
+ * 
+ */
+ /*function viamogift_purchased_views_query_alter(&$view, &$query) {
+     
+    if($view->name == 'gift_list_purchased_product') {
+     $query->base_table = 'commerce_product';
+     //$query->base_table = 'commerce_product'
+        //echo "<pre>";
+       // print_r($query); exit;
+    //
+    }
+        
+}*/

@@ -1,0 +1,96 @@
+/**
+ * This file will be overwritten when the Bootstrap Framework source files
+ * are compiled using the Less CSS pre-processor.
+ */
+#top_bar .right {float: right !important;margin-top: -20px;}
+#top_bar .block.block-block.alignleft.clearfix {width: 25%;}    
+.main-menu li a.active { color: #ac7b32;}
+#overlay-content .container {width: 80%;}
+.select-wrapper input.select-dropdown {background-color: snow;}
+
+// Login block css
+.form-item input.error, .form-item textarea.error, .form-item select.error { border-style: none none solid;}
+#edit-name--2{margin-left: 3rem; width: 92%; width: calc(100% - 3rem);}
+#edit-pass--2{margin-left: 3rem; width: 92%; width: calc(100% - 3rem);}    
+#user-login-form .input-field.col label {left: 2.95rem; top: -0.2rem; font-weight: inherit;}
+#user-login-form [type="checkbox"]:checked + label{left: 5px; top: -29px;} 
+#user-login-form [type="checkbox"]+ label{left: 5px; top: -29px;} 
+#edit-actions--2{margin-left: 3rem; width: 92%; width: calc(100% - 3rem); margin-bottom: 0; margin-top: 1em; }     
+#user-login-form .input-field{margin-top: 0rem;}
+label { display: block; font-weight: 300; }
+#user-login-form .input-field label.active:not(.label-icon) { font-size: 0.8rem; transform: translateY(-75%); }
+#user-register-form .input-field.col label {left: 0.0rem;}
+.form-item {margin-top: 0em; margin-bottom: 0em;}    
+fieldset { border: medium none;} 
+#user-register-form .confirm-parent, #user-register-form .password-parent { clear: left; margin: 0; width: 100%;}
+.form-item-pass-pass2 label, .form-item-pass-pass1 label {top: 1.8rem;}*/
+
+.input-field label.active:not(.label-icon) { font-size: 0.8rem; transform: translateY(-80%); }
+//.input-field.col label {left: 0.1rem;}
+
+
+
+/* 
+ * Start  Event Form CSS 
+*/
+.date-float {display: none;}
+#edit-event-calendar-date > div {margin-bottom: -39px;margin-top: -35px;width: 60px;}
+.node-event_calendar-form .container-inline-date .form-item, .container-inline-date .form-item input {width: auto;}
+.node-event_calendar-form .container-inline-date .form-item input, .container-inline-date .form-item select, .container-inline-date .form-item option {margin-left: -16px;}
+.node-event_calendar-form .container-inline-date .form-item, .container-inline-date .form-item input {width: 270px;}
+.node-event_calendar-form .tp-of-cer { margin-top: -42px;}
+#other-reception-venue{display: none;}
+#other-ceremony-venue{display: none;}
+.ceremony-venue{display: none;}
+.page-user-addressbook-billing .primary-tab {display:none;}
+.overlay-control-checkbox{display:none;}
+#overlay-close-wrapper { margin-top: 15px; }
+.node-type-product #hero_title{display:none;}
+
+#edit-quantity:not(.browser-default):focus:not([readonly]){border-bottom: 1px solid #26a69a;-webkit-box-shadow: 0 1px 0 0 #26a69a;box-shadow: 0 1px 0 0 #26a69a;}            
+[type="checkbox"]:not(:checked), [type="checkbox"]:checked {pointer-events: auto;margin-bottom: 1em;}
+.form-item-customer-profile-shipping-commerce-customer-profile-copy{margin-top: 0em;margin-bottom: 1em;}
+[type="radio"]:not(:checked)+label, [type="radio"]:checked+label{top: 45px;}
+.view-id-shop_categories .collection {margin: .5rem 0 0rem 0;}   
+//.item-list ul li {margin: 0 0 -5.75em -1.0em;padding: 0;}
+.easy-breadcrumb_segment{ font-size: 18px; color: rgba(255,255,255,0.7);}
+/* Override inline dom styles from modal.js */
+#modalContent {position: fixed !important;top: 12% !important;background-color: #fafafa;}        
+.commerce-registry-name{display: none;}
+
+    
+    
+
+    
+    
+
+    
+
+
+        
+    
+
+    
+    
+    
+    
+
+    
+
+
+    
+
+
+    
+     
+
+
+
+    
+    
+
+
+
+    
+    
+

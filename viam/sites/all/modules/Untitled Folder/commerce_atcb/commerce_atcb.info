@@ -1,0 +1,19 @@
+name = Commerce add to cart button
+description = Provides add to cart button for product reference field
+package = Commerce (Contrib)
+dependencies[] = commerce
+dependencies[] = commerce_checkout
+dependencies[] = commerce_line_item
+dependencies[] = commerce_order
+dependencies[] = commerce_product
+dependencies[] = commerce_product_pricing
+dependencies[] = commerce_product_reference
+dependencies[] = entity
+dependencies[] = ctools
+files[] = views/commerce_atcb_field_handler_add_to_cart_btn.inc
+files[] = views/commerce_atcb_field_handler_add_to_list_btn.inc
+core = 7.x
+php = 5
+ 
+version = "7.x-1.1"
+core = "7.x"
