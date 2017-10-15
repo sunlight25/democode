@@ -1,0 +1,10 @@
+name = JiaThis Share Button
+description = Adds configurable <em>Share</em> buttons from JiaThis to each selected node type, as well as a configurable block with a <em>JiaThis</em> box in it.
+core = 7.x
+
+; Information added by Drupal.org packaging script on 2016-09-02
+version = "7.x-1.0"
+core = "7.x"
+project = "jiathis"
+datestamp = "1472784498"
+

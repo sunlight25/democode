@@ -1,0 +1,4 @@
+name = Ukschool User
+description = Change the user login and user registration page restricted. 
+core = 7.x
+package = z

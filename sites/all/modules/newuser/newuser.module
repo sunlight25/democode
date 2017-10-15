@@ -1,0 +1,48 @@
+<?php
+function newuser_admin_paths_alter(&$paths) {
+    // Treat all user pages as not administrative.
+    $paths['user/*'] = FALSE;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function newuser_menu() {
+    global $user;
+    if (in_array('Tutor', array_values($user->roles), TRUE)){
+        $items['change-password'] = array(
+         'title' => t('Change password'),
+         'description' => t('You can change your password here.'),
+         'page callback' => 'newuser_render_user_pass_change_form',
+         'access arguments' => array('access content'),
+        );        	
+	return $items;
+    }        
+}
+
+
+function newuser_render_user_pass_change_form() {
+    global $user;
+    if (!user_is_logged_in()) {
+        drupal_access_denied();
+    }        
+    module_load_include('inc', 'user', 'user.pages');
+    $form = drupal_get_form('user_profile_form', $user);        
+    $request_new = l(t('Request new password'), 'user/password', array('attributes' => array('title' => t('Request new password via e-mail.'))));
+    $current_pass_description = t('Enter your current password to change the %pass. !request_new.', array('%pass' => t('Password'), '!request_new' => $request_new));
+    $form['account']['current_pass']['#description'] = $current_pass_description;                
+    unset(
+        $form['account']['name'],            
+        $form['account']['status'],
+        $form['account']['roles'],
+        $form['locale'],
+        $form['l10n_client'],
+        $form['picture'],
+        $form['overlay_control'],
+        $form['contact'],
+        $form['timezone'],    
+        $form['metatags'],
+        $form['redirect']
+      );        
+     return $form;
+}

@@ -1,0 +1,263 @@
+
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .title-small {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  #why .content h2 {
+    font-size: 20px;
+    line-height: 30px;
+  }
+  #why img {
+    width: 100%;
+  }
+  #screenshot .portfolio figure figcaption .heading {
+    padding: 0 30px;
+  }
+  #cta h2 {
+    font-size: 18px;
+  }    
+}
+@media (max-width: 568px) {
+  #portfolio .portfolio-items figure {
+    width: 100%;
+  }
+  #portfolio .portfolio-items figure figcaption .info {
+    margin-top: 120px;
+  }
+  #contact .info-inner {
+    padding-left: 15px;
+  }
+}
+@media (max-width: 480px) {
+  .section {
+    padding: 50px 0;
+  }
+  .section-header .section-title {
+    font-size: 24px;
+  }
+  .section-header .section-subtitle {
+    font-size: 11px;
+  }
+  .title-small {
+    font-size: 22px;
+    line-height: 28px;
+  }
+  .navbar .navbar-header {
+   /* padding: 13px 22px;*/
+    float: left;
+  }
+
+  .navbar .navbar-right {
+    float: right;
+  }
+  .hero-area .contents {
+    padding-top: 50px;
+  }
+  .hero-area .contents h1 {
+    font-size: 20px;
+  }
+  .hero-area .contents p {
+    font-size: 12px;
+  }
+  #features .box-item .icon {
+    margin: 10px 15px;
+    float: left;
+  }
+  #features .text {
+    text-align: left;
+  }
+  #features .box-item .text h4 {
+    font-size: 12px;
+    line-height: 16px;
+  }
+  #features .box-item .text p {
+    font-size: 12px;
+  }
+  #features .show-box {
+    padding: 24px 30px;
+  }
+  #features .content-left,
+  #features .content-right {
+    margin-bottom: 60px;
+  }
+  #features .features h4 {
+    font-size: 14px;
+  }
+  #features .features .icon i {
+    padding-right: 22px;
+  }
+  #why .content h2 {
+    font-size: 20px;
+    line-height: 30px;
+  }
+  #why .content .list-item li {
+    font-size: 13px;
+  }
+  #why .content .btn {
+    margin-bottom: 60px;
+  }
+  #why img {
+    width: 100%;
+  }
+  #cta h2 {
+    font-size: 18px;
+  }
+  #cta .btn {
+    margin-top: 30px;
+  }
+  #screenshot .portfolio figure figcaption .heading {
+    padding: 0;
+    top: 5%;
+  }
+  #screenshot .portfolio figcaption:hover .heading {
+    top: 15%;
+  }
+  #testimonial .section-title {
+    font-size: 22px;
+  }
+  #testimonial .section-subtitle {
+    font-size: 12px;
+    line-height: 20px;
+  }
+  #clients .client-item-wrapper {
+    margin-bottom: 30px;
+  }
+  #contact .section-title {
+    font-size: 22px;
+  }
+  #contact .info h4 {
+    font-size: 18px;
+  }
+}
+@media (max-width: 640px) and (min-width: 960px) {
+  .navbar-header {
+    width: 100px;
+    float: left;
+    padding-left: 7px !important;
+  }
+  .navbar-right {
+    float: right;
+    width: 100px;
+  }
+}
+@media (max-width: 767px) and (min-width: 479px) {
+  .navbar-header {
+    width: 100%;
+    float: left;
+    padding-left: 7px !important;
+  }
+  .navbar-right {
+    float: right;
+   /* width: 100px;*/
+  } 
+}
+
+/*=========NEW CSS START HERE 24082017============*/
+
+@media (max-width: 1024px) {
+.uni-detail-mid-arti-innbg-row-mid-left-inn-thumb1{width:15%;}	
+.uni-detail-mid-arti-innbg-row-mid-left-inn-thumb-right1{width: 82%;}
+#comment_form_add.modal{max-height:25%!important; top:100px!important;}
+.update-comment.modal{max-height: 25%!important;}
+/*added by vivek start*/
+.main-li-login .mob_nav_pic_img{width:100%; float:left; text-align:center;}
+.main-li-login .mob_nav_pic_img img{width:80px; height:80px; border-radius:50%; display:inline-block;}
+.main-li-login .mob_nav_pic_img a{padding-left:0!important; padding-right:0!important;}
+.main-li-login .login-name-span{width:100%; float:left; margin-right: 0; padding-top: 14px; height:auto; padding-left: 17px; font-size:14px; text-transform:uppercase; padding-bottom: 12px; border-top: 1px solid #6072d6;}
+.main-li-login .login-icon1{display:none;}
+.main-li-login .sign-out-mobile{width:100%!important; float:left!important; height:auto!important; padding-left:0!important; border-top: 1px solid #6072d6;}
+.main-li-login{width:100%!important;}
+.sign-out-mobile span{padding-left: 17px;}
+/*added by vivek end*/
+}
+
+@media (max-width: 980px) {
+.language .hide-on-med-and-down{display:block!important;}
+}
+
+@media (max-width: 768px) {
+.update-comment.modal{max-height: 25%!important;}
+#comment_form_add.modal{max-height: 25%!important;}
+.main-li-login .mob_nav_pic_img{width:100%; float:left; text-align:center;}
+.main-li-login .mob_nav_pic_img img{width:80px; height:80px; border-radius:50%; display:inline-block;}
+.main-li-login .mob_nav_pic_img a{padding-left:0!important; padding-right:0!important;}
+.main-li-login .login-name-span{width:100%; float:left; margin-right: 0; padding-top: 14px; height:auto; padding-left: 17px; font-size:14px; text-transform:uppercase; padding-bottom: 12px; border-top: 1px solid #6072d6;}
+.main-li-login .login-icon1{display:none;}
+.main-li-login .sign-out-mobile{width:100%!important; float:left!important; height:auto!important; padding-left:0!important; border-top: 1px solid #6072d6;}
+.main-li-login{width:100%!important;}
+.sign-out-mobile span{padding-left: 17px;}
+.language .hide-on-med-and-down{display:none!important;}
+}
+
+@media (max-width: 480px) {
+.uni-detail-mid-arti-innbg-row-mid-left-inn-thumb1{width:100%; margin-right: 0; margin-bottom:15px; height:auto;}	
+.uni-detail-mid-arti-innbg-row-mid-left-inn-thumb-right1{width:100%; text-align: center;}	
+.uni-detail-mid-arti-innbg-row-midbg{padding: 10px; }
+.uni-detail-mid-arti-innbg-row-mid-left-inn-thumb-right-title1{margin-bottom: 10px;}
+.uni-detail-mid-arti-innbg-row-mid-left-inn-thumb1 img{width: 80px; height: 80px;}
+.uni-detail-mid-arti-innbg-row-mid-left-inn-thumb-right-con{line-height: 22px; font-size: 14px;}
+.update-comment.modal{max-height: 38%!important;}
+#comment_form_add.modal{max-height: 38%!important;}
+}
+	
+/*=========NEW CSS END HERE 24082017============*/
+
+
+
+/** TEACHER LISTING PAGE CSS START HERE 26082017*/
+
+@media (max-width: 1024px) {
+
+.page-teacher .cd-gallery{padding:20px;}
+.page-teacher .cd-gallery li{width: 46%;}
+.page-teacher .cd-gallery .list li {width: 100%;}
+
+.page-schools .cd-gallery{padding:20px;}
+.page-schools .cd-gallery li{width: 46%;}
+.page-schools .cd-gallery .list li {width: 100%;}
+.page-schools .cd-gallery li:first-child {margin-left: 0;}
+.page-schools .cd-gallery ul {text-align: center;}
+.page-schools .card-reveal-upper{text-align: left;}
+
+#comment_form_add.modal{margin: 0 auto;}
+
+
+}
+
+@media (max-width: 980px) {
+.navbar-left .main-menu{display: block !important;}
+nav .button-collapse{display: none !important;}
+
+.top-search-right .hide-on-med-and-down {display: block !important;}
+
+}
+
+@media (max-width: 768px) {
+.navbar-left .main-menu{display: none !important;}
+nav .button-collapse{display: block !important;}
+}
+
+@media (max-width: 768px) {
+
+.page-teacher .cd-gallery li{width: 100%; margin-left:0;}
+.cd-tab-filter a{line-height: 50px;}
+/*.top-right-select {margin-top: 0;}*/
+
+.cd-main-content{margin-top: 0;}
+.school-list-fixed .cd-tab-filter-wrapper .change-view{width: 16%;}
+.school-list-fixed .cd-tab-filter-wrapper .cd-tab-filter a {line-height: 40px;}
+.school-list-fixed .cd-tab-filter-wrapper .top-right-select {margin-top: 6px;}
+
+.top-right-select .ctools-auto-submit-full-form {width: 80%;}
+.top-right-select {width: 58%;}
+
+.page-schools .cd-gallery li{width: 100%; margin-left:0;}
+
+}
+
+
+
+/** TEACHER LISTING PAGE CSS END HERE 26082017*/
+

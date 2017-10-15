@@ -1,0 +1,9 @@
+<?php
+
+/**
+ * Implements hook_menu_alter().
+ */
+
+function ukschooluser_menu_alter(&$items) {
+  $items['user/register']['access callback'] = FALSE;
+}

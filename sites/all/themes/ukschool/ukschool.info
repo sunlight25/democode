@@ -1,0 +1,75 @@
+name                                   = ukschool
+
+description                            = Built to use Material Design system.
+core                                   = 7.x
+screenshot                             = screenshot.png
+base theme                             = materialize
+
+; STYLESHEETS
+;-------------------------------------------------------------------------------
+
+
+stylesheets[all][]                     = css/bootstrap.min.css
+stylesheets[all][]                     = css/ripples.min.css
+;stylesheets[all][]                     = css/main.css
+stylesheets[all][]                     = css/responsive.css
+stylesheets[all][]                     = css/animate.min.css
+
+stylesheets[all][]                     = css/normalize.css
+stylesheets[all][]                     = css/ion.rangeSlider.css
+stylesheets[all][]                     = css/ion.rangeSlider.skinHTML5.css
+stylesheets[all][]                     = css/ion.rangeSlider.skinFlat.css
+stylesheets[all][]                     = css/reset.css
+stylesheets[all][]                     = css/style.css
+
+
+
+
+; SCRIPTS
+;-------------------------------------------------------------------------------
+
+scripts[]                              = js/wow.js
+scripts[]                              = js/custom.js
+scripts[]                              = js/modernizr.js
+scripts[]                              = js/jquery.mixitup.min.js
+scripts[]                              = js/ion.rangeSlider.js
+scripts[]                              = js/main.js
+scripts[]                              = js/jquery.nav.js
+scripts[]                              = js/classie.js
+scripts[]                              = js/init.js
+
+
+
+; REGIONS
+;-------------------------------------------------------------------------------
+regions[top]                           = Top Header
+regions[top_bottom]                    = Top Bottom
+regions[header]                        = Header
+regions[homepagebanner]                = Home Page Banner
+regions[user_nav]                      = User navigation
+regions[highlight]                     = Highlighted
+regions[help]                          = Help
+regions[content]                       = Content
+regions[sidebar_first]                 = Sidebar first
+regions[sidebar_second]                = Sidebar second
+regions[content_bottom1]               = Content Bottom 1
+regions[content_bottom2]               = Content Bottom 2
+regions[content_bottom3]               = Content Bottom 3
+regions[content_bottom]                = Content Bottom
+regions[footer_first]                  = Footer First
+regions[footer_second]                 = Footer Second
+regions[footer_third]                  = Footer Third
+regions[footer_forth]                  = Footer Fourth
+regions[footer_fifth]                  = Footer Fifth
+regions[social_share]                  = Social Share
+regions[news_letter]                   = News Letter
+regions[GotoTop]                       = Go To Top
+regions[model_popup]                   = model popup
+regions[footer]                        = Footer
+
+; Information added by Drupal.org packaging script on 2016-10-24
+version = "7.x-1.1"
+core = "7.x"
+project = "materializecss"
+datestamp = "1477294442"
+

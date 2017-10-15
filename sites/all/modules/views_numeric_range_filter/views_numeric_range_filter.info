@@ -1,0 +1,14 @@
+name = Vews Numeric Range Filter module.
+description = Vews Numeric Range Filter module.
+core = 7.x
+package = Views
+dependencies[] = views
+
+files[] = handlers/views_handler_filter_numeric_range.inc
+
+; Information added by Drupal.org packaging script on 2016-06-08
+version = "7.x-1.0"
+core = "7.x"
+project = "views_numeric_range_filter"
+datestamp = "1465426140"
+

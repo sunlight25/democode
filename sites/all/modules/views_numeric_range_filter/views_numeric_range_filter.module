@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Views Numeric Range Filter module.
+ */
+
+/**
+ * Implements hook_views_api().
+*/
+function views_numeric_range_filter_views_api() {
+  return array(
+    'api' => 3,
+  );
+}
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function views_numeric_range_filter_views_data_alter(&$data) {
+  foreach ($data as &$item) {
+    foreach ($item as &$subitem) {
+      if (isset($subitem['filter']['handler']) && $subitem['filter']['handler'] == 'views_handler_filter_numeric') {
+        $subitem['filter']['handler'] = 'views_handler_filter_numeric_range';
+      }
+    }
+  }
+}

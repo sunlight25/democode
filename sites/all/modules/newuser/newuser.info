@@ -1,0 +1,4 @@
+name = New User
+description = Change the admin theme to site theme for  the user edit page . 
+core = 7.x
+package = z

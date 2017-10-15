@@ -1,0 +1,4 @@
+name = Ukschool filter
+description = Ukschool Search Filter.
+core = 7.x
+package = z
