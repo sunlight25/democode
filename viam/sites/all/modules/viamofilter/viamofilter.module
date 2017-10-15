@@ -1,0 +1,224 @@
+<?php
+/**
+ * Implements hook_menu().
+ *  
+ */      
+/*function viamofilter_menu() {    
+    $items['ukschoolautocomplete/multi_search'] = array(
+        'page callback' => 'ukschoolautocomplete_multisearch_callback',
+        'access arguments' => array('access content'),
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}*/
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Alter exposed filter form in views
+ * 
+ */
+function viamofilter_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {              
+    
+    if($form_id == 'views_exposed_form' && $form_state['view']->name == 'viamo_venues') { 
+            $form['field_venue_type_tid']['#prefix'] = '<label class="mr-sm-2" for="inlineFormInput">'.t('Venue Type').'</label>';                                                                
+            //$form['field_venue_type_tid']['#options']['All'] = t('Select Venue Type');                          
+            $form['field_venue_type_tid']['#options']['All'] = t('All');                           
+            $form['sort_by']['#options']['sort_by'] = t('Sort By');        
+            $form['sort_by']['#options']= array_reverse($form['sort_by']['#options']);            
+            $form['sort_by']['#prefix']  = '<label class="mr-sm-2" for="inlineFormCustomSelect">'.t('Ordering').'</label>';
+
+      //$form['field_boarders_value']['#options']['All'] = t('All');                  
+      //unset($form['field_location_tid']['#options'][19]);                          
+        
+    }
+    
+    /*if ($form_id == 'views_exposed_form' && $form['#id'] == 'views-exposed-form-multi-search-page') {
+        $view = $form_state['view'];
+        if ( $view->name == 'multi_search' && $view->current_display == 'page' ) { 
+                $form['#prefix'] = '<span class="wow fadeInRight banner-form" data-wow-duration="1000ms" data-wow-delay="400ms">';
+                $form['#suffix'] = '</span>';
+                $form['#attributes']['class'][0] ='contact-form';
+                $form['#attributes']['class'][1] = 'text-center';
+                $form['#attributes']['onsubmit'] = 'return false';
+                if (!isset($_REQUEST['title'])) {
+                    $form['title']['#attributes']['value'] = t('Search for Schools');
+                }
+                $form['title']['#attributes']['onblur'] = 'if(this.value=="") this.value="'.t('Search for Schools').'"';
+                $form['title']['#attributes']['onfocus'] = 'if(this.value=="'.t('Search for Schools').'") this.value=""';                    
+                $form['title']['#autocomplete_path'] = 'ukschoolautocomplete/multi_search';	
+                $form['title']['#attributes']['class'][] ='form-control';
+                //echo "<pre>";
+                //print_r($form['title']); exit;
+                unset($form['submit']['#size']);                
+                
+                unset($form['submit']);                
+        }
+                
+    }    
+    if ($form_id == 'views_exposed_form' && $form['#id'] == 'views-exposed-form-multi-search-page-1') {		
+                $view = $form_state['view'];		
+                if ( $view->name == 'multi_search' && $view->current_display == 'page_1' ) {                                            
+                        if (!isset($_REQUEST['title'])) {
+                            $form['title']['#attributes']['value'] = t('Search for Schools');
+                        }                        
+                        $form['title']['#attributes']['onblur'] = 'if(this.value=="") this.value="'.t('Search for Schools').'"';
+                        $form['title']['#attributes']['onfocus'] = 'if(this.value=="'.t('Search for Schools').'") this.value=""';                    
+                        unset($form['title']['#id']);                       
+                        $form['title']['#id'] = "edit-title-top-menu-search";
+                        $form['title']['#autocomplete_path'] = 'ukschoolautocomplete/multi_search';	        
+			$form['#attributes']['onsubmit'] = 'return false';	                                        
+                        unset($form['submit']);
+		}
+        } */       
+    }
+  
+  
+  
+  /**
+ * Default preprocess function for all filter forms.
+ */
+/*function viamofilter__preprocess_views_exposed_form(&$vars) {
+  $form = &$vars['form'];
+
+  // Render new created sort field.
+  if (isset($form['sorting'])) {
+    $form['sorting']['#printed'] = FALSE;
+    $vars['sorting'] = drupal_render($form['sorting']);
+
+    // Need to rebuild the submit button.
+    $form['submit']['#printed'] = FALSE;
+    $vars['button'] = drupal_render_children($form);
+  }
+}*/
+
+  
+/**
+ * Implements hook_views_query_alter().
+ *
+ * Alter exposed filter form in views
+ * 
+ */
+  /*
+function viamofilter_views_query_alter(&$view, &$query) {
+    
+    if ($view->name == 'schools' && $view->current_display ='page') {              
+        if(isset($view->exposed_data['field_statutory_high_age_value']) && $view->exposed_data['field_statutory_high_age_value']!='') {
+           $query->add_table('field_data_field_statutory_low_age');
+           $query->add_where(1,'field_data_field_statutory_low_age.field_statutory_low_age_value',$view->exposed_data['field_statutory_high_age_value'],'<=');
+        
+           
+           $query->add_where(1,'field_data_field_statutory_high_age.field_statutory_high_age_value',$view->exposed_data['field_statutory_high_age_value'],'>=');                                          
+            foreach($query->where[1]['conditions'] as $i=> $condition) {                
+                if($condition['operator']=='BETWEEN' && $condition['field']=='field_data_field_statutory_high_age.field_statutory_high_age_value') {                                        
+                    unset($query->where[1]['conditions'][$i]);                    
+                }
+	    }	                       
+        }         
+         //$where=$query->where;
+         //unset($where[1]['conditions']['2']);
+         //echo "<pre>";
+         
+         //print_r($query->where[1]['conditions']); exit;
+        // fire($query);
+        
+    }
+        //$view->query->add_table('field_data_field_cp');    
+        //$view->query->add_where(1, 'field_data_field_cp.field_cp_value', '%' . $view->exposed_data['field_commune_value'] . '%', 'LIKE');    
+  } 
+  
+  */
+  /*function viamofilter_views_pre_execute(&$view) {
+  if ($view->name == 'schools') {
+   //$query = (string)$view->build_info['query'];
+    //echo dpq($view->build_info['query']);
+    //echo $query;
+  }
+}*/
+
+
+/*
+ * Implement callback function for Home page search 
+ *  multi_search view 
+ *//*
+function ukschoolautocomplete_multisearch_callback() {      
+  $arg = arg();
+  $views_list = array();
+  // Get all the referenced views.
+  if (!empty($arg)) {
+    $prefix = $search = array_pop($arg);
+    array_shift($arg);
+    $views_list = $arg;
+  }
+  preg_match_all('/[^, ]*$/', $search, $match);
+  $search = $match[0][0];
+  $viewData = array();
+  // Loop all the referenced views to get.
+  foreach ($views_list as $view_name) {
+    // Get the view.
+    $view = views_get_view($view_name);
+    // Check wether the view exists and user has access to it.
+    
+    if ($view) {
+      //Make a foreach to support Views 3 "OR" statement and search for multiple fields.
+      foreach ($view->display['default']->display_options['filters'] AS $key => $value) {
+        if (!$value['value'] && $search) {
+          $view->display['default']->display_options['filters'][$key]['value'] = $search;
+        }
+      }
+      $view->render();
+      // Check for access.
+      if ($view->access('default')) {
+        if ($view->style_plugin->rendered_fields) {
+          // Get the views header if it exists.
+          if (!empty($view->header)) {
+            $header = $view->header;
+            $header = array_shift($header);
+            $viewData[$view_name] = '<strong class="group-header">' . strip_tags($header->options['content']) . '</strong>';
+          }
+        }
+        // Get all the values.
+        foreach ($view->style_plugin->rendered_fields as $row) {                    
+         if (isset($row['title'])) {
+            $dropdown = check_plain($row['title']);
+            if ($dropdown != '') {
+                $suggestion = check_plain($row['title']);
+                $suggestion = decode_entities($suggestion);
+                $path = $row['path'];
+                // Add a class wrapper for a few required CSS overrides.                
+                $matches[$suggestion.'|'.$path] = '<div class="reference-autocomplete">' . $dropdown . '</div>';                
+              }
+            }                 
+        }        
+      }
+    }
+  }
+  
+  if (empty($matches)) {
+    $matches[''] = '<div class="reference-autocomplete">' . t('The %string return no results. Please try something else.', array('%string' => $string)) . '</div>';
+  }    
+  return drupal_json_output($matches);  
+}
+*/
+
+/**
+ * Implements hook_views_ajax_data_alter().
+ *
+ * @param array $commands
+ *   An array of ajax commands
+ * @param string $view
+ *   The view which is requested.
+ */
+    
+/*function viamofilter_views_ajax_data_alter(&$commands, $view) {           
+    if($view->name=='schools') {          
+      $commands[] = ajax_command_invoke('.view-schools .cd-gallery', 'addClass', array('filter-is-visible')); 
+      $commands[] = ajax_command_invoke('.view-schools .cd-tab-filter', 'addClass',array('filter-is-visible')); 
+      $commands[] = ajax_command_invoke('.view-schools .cd-filter', 'addClass', array('filter-is-visible')); 
+      $commands[] = ajax_command_invoke('.view-schools .cd-filter-trigger', 'addClass', array('filter-is-visible'));        
+      $commands[] = ajax_command_invoke('#block-views-exp-schools-page .cd-filter', 'addClass', array('filter-is-visible')); 
+      $commands[] = ajax_command_invoke('#block-views-exp-schools-page .cd-filter-trigger', 'addClass', array('filter-is-visible'));                    
+    }    
+  } 
+*/
+?>

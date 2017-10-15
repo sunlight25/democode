@@ -1,0 +1,4 @@
+name = Viamo Messages
+description = Viamo Message module use to show a message on the admin overlay. 
+core = 7.x
+package = z

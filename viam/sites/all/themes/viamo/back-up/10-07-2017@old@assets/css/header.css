@@ -1,0 +1,59 @@
+#site_header { display: block; width: 100%; position: relative; z-index: 100 }
+#site_header ul { margin: 0 }
+#site_header #top_bar { position: relative; display: block; background-color: #3e454f; padding: 10px;  }
+#site_header #top_bar span,
+#site_header #top_bar li a { color: rgba(255,255,255,1.00); }
+#site_header #top_bar:after { content: ''; display: block; clear: both; width: 100%; height: 0 }
+#site_header #top_bar ul li { display: inline-block; float: left; margin-left: 20px }
+#site_header #top_bar span,
+#site_header #top_bar li { font-size: 0.6rem; line-height: 0.6rem }
+#site_header .masthead { position: relative; padding-bottom: 0px }
+#site_header .masthead:after { content: ''; display: block; width: 100%; clear: both }
+
+
+#site_header .masthead .site_logo { background-image: url(../img/viamo-logo.png); background-repeat: no-repeat; background-position: 0; background-size: 248px 42px; width: 124px; height: 42px; display: inline-block; position: absolute; left: 50%; top: 20px; margin: 0; padding: 0; text-indent: -9999px; -moz-transform: translateX(-50%); -webkit-transform: translateX(-50%); -o-transform: translateX(-50%); -ms-transform: translateX(-50%); transform: translateX(-50%); 
+}
+#site_header .masthead .site_logo:hover { background-position: -124px 0;}
+
+#site_header .masthead .shopping-menu { padding: 0 20px }
+#site_header .masthead ul.shopping-menu li { display: inline-block; float: left; margin: 20px 10px; text-transform: uppercase; font-size: 0.7rem; line-height: 40px }
+#site_header .masthead ul.shopping-menu li a { line-height: 40px; display: block; color: #ac7b32;  }
+#site_header .masthead ul.shopping-menu li a span { display: none }
+#site_header .masthead ul.shopping-menu li a i { line-height: 40px; vertical-align: middle; margin-right: 5px; color: #3e454f; display: inline-block }
+#site_header .masthead ul.shopping-menu li:hover a i { color: #ac7b32 }
+#site_header .masthead ul.shopping-menu .hamburger-box { vertical-align: middle; height: 20px; position: relative; margin-right: 5px }
+#site_header .masthead ul.shopping-menu .hamburger-label { color: #ac7b32;  text-transform: uppercase }
+#site_header .masthead ul.shopping-menu .hamburger-inner,
+#site_header .masthead ul.shopping-menu .hamburger-inner:after,
+#site_header .masthead ul.shopping-menu .hamburger-inner:before { height: 2px }
+
+#site_header .masthead .main_nav { text-align: center; border-top: 1px solid #d6d6d6; border-bottom: 1px solid #3e454f; padding: 6px 0; position: absolute; bottom: 0; left: 0; right: 0 }
+#site_header .masthead .main_nav ul { display: inline-block; margin: 0 auto; }
+#site_header .masthead .main_nav ul li { display: inline-block; font-size: 13px; line-height: 14px; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 20px; font-weight: 700; }
+#site_header .masthead .main_nav ul li.current-menu-item a { color: #ac7b32 }
+#site_header .masthead .main_nav ul li:hover a { text-decoration: none }
+
+#site_header .masthead #header_search { display:none}
+#site_header .masthead #header_search input { border-bottom: none; border-top: 1px solid #d6d6d6;}
+
+
+#site_header .masthead.reversed { background-color: #3e454f; color: rgba(255,255,255,1.00) }
+#site_header .masthead.reversed li,
+#site_header .masthead.reversed li a,
+#site_header .masthead.reversed li a span { color: rgba(255,255,255,1.00) }
+#site_header .masthead.reversed ul.shopping-menu li a i { color: #fff; }
+#site_header .masthead.reversed ul.shopping-menu .hamburger-inner,
+#site_header .masthead.reversed ul.shopping-menu .hamburger-inner:after,
+#site_header .masthead.reversed ul.shopping-menu .hamburger-inner:before { background-color: rgba(255,255,255,1.00) }
+#site_header .masthead.reversed .site_logo { background-image: url(../img/viamo-logo-reversed.png) }
+
+
+
+#site_header.stick #main_header_on_scroll { top: 0px; padding-bottom: 0 }
+
+#main_header_on_scroll { position: fixed !important; top: -110px; left: 0; right: 0; -webkit-transition: all 0.3s ease-in-out; -moz-transition: all 0.3s ease-in-out; -ms-transition: all 0.3s ease-in-out; -o-transition: all 0.3s ease-in-out; transition: all 0.3s ease-in-out; }
+#main_header_on_scroll .site_logo { top: 20px }
+#main_header_on_scroll .hamburger { color: rgba(255,255,255,1.00) }
+#main_header_on_scroll .hamburger-label { display: none }
+#main_header_on_scroll.masthead .site_logo { background-image: url(../img/viamo-icn-reversed.png) !important; background-size: 18px 21px; width: 18px; height: 21px;  }
+#main_header_on_scroll.masthead ul.shopping-menu li { margin: 10px 10px;}

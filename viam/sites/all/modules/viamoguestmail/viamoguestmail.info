@@ -1,0 +1,4 @@
+name = viamo guest mail
+description = viamo Send Email To guest.
+core = 7.x
+package = z

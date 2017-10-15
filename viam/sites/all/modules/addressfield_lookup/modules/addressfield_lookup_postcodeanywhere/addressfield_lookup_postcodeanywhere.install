@@ -1,0 +1,74 @@
+<?php
+
+/**
+ * @file
+ * Install/uninstall functions for tAddress Field Lookup Postcode Anywhere.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function addressfield_lookup_postcodeanywhere_schema() {
+  // Postcode anywhere country data cache.
+  $schema['cache_addressfield_lookup_postcodeanywhere_country_data'] = drupal_get_schema_unprocessed('system', 'cache');
+
+  return $schema;
+}
+
+/**
+ * Implements hook_requirements().
+ */
+function addressfield_lookup_postcodeanywhere_requirements($phase) {
+  $requirements = array();
+
+  if ($phase == 'runtime') {
+    // Add a requirement for a working default addressfield lookup service.
+    $requirements['addressfield_lookup_postcodeanywhere'] = array(
+      'title' => t('Address Field Lookup - Postcode Anywhere'),
+    );
+
+    // Determine the status of the requirement.
+    if (!variable_get('addressfield_lookup_postcodeanywhere_license', FALSE)) {
+      // No default service available.
+      $requirements['addressfield_lookup_postcodeanywhere']['value'] = t('Not configured');
+      $requirements['addressfield_lookup_postcodeanywhere']['severity'] = REQUIREMENT_WARNING;
+      $requirements['addressfield_lookup_postcodeanywhere']['description'] = t('Postcode Anywhere has not been configured. Please enter the license on the <a href="@config_url">configuration page</a>', array('@config_url' => url('admin/config/regional/addressfield-lookup/postcodeanywhere/configure')));
+    }
+    else {
+      $requirements['addressfield_lookup_postcodeanywhere']['value'] = t('OK');
+      $requirements['addressfield_lookup_postcodeanywhere']['severity'] = REQUIREMENT_OK;
+    }
+  }
+
+  return $requirements;
+}
+
+/**
+ * Implements hook_update_N().
+ *
+ * Create the country data cache table.
+ */
+function addressfield_lookup_postcodeanywhere_update_7000() {
+  drupal_install_schema('addressfield_lookup_postcodeanywhere');
+}
+
+/**
+ * Implements hook_update_N().
+ *
+ * Migrate postcode anywhere config variables.
+ */
+function addressfield_lookup_postcodeanywhere_update_7001() {
+  // Login.
+  $postcodeanywhere_login = variable_get('postcodeanywhere_login', FALSE);
+  if (FALSE !== $postcodeanywhere_login && FALSE !== variable_get('addressfield_lookup_postcodeanywhere_login', FALSE)) {
+    variable_set('addressfield_lookup_postcodeanywhere_login', $postcodeanywhere_login);
+    variable_del('postcodeanywhere_login');
+  }
+
+  // License.
+  $postcodeanywhere_license = variable_get('postcodeanywhere_license', FALSE);
+  if (FALSE !== $postcodeanywhere_license && FALSE !== variable_get('addressfield_lookup_postcodeanywhere_license', FALSE)) {
+    variable_set('addressfield_lookup_postcodeanywhere_license', $postcodeanywhere_license);
+    variable_del('postcodeanywhere_license');
+  }
+}

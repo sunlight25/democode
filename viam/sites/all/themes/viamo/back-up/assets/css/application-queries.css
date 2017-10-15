@@ -1,0 +1,33 @@
+/* CSS Document */
+/* Extra small devices (portrait phones, less than 544px) */
+/* No media query since this is the default in Bootstrap
+
+/* Small devices (landscape phones, 544px and up) */
+@media (min-width: 544px) {}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+
+	.column { display:inline-block; float: left; }
+	.col-2 { width:16.666%;}
+	.col-4 { width:33.333%;}
+	.col-6 { width:50%;}
+	
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+	
+	#site_header .masthead ul.shopping-menu li a span { display:inline-block}
+
+	.masthead .site_logo { background-image: url(../img/viamo-logo.png); background-repeat: no-repeat; background-position: center; background-size: 124px 42px; width: 124px; height: 42px; display: inline-block; position: absolute; left: 50%; top: 20px; margin: 0; padding: 0; text-indent: -9999px;
+	-moz-transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+	-o-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	transform: translateX(-50%);}
+	
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {}

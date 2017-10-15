@@ -1,0 +1,2 @@
+<?php
+    $_SESSION['ucberkeley_cas_installed'] =TRUE;

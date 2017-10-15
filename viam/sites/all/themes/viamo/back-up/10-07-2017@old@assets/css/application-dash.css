@@ -1,0 +1,22 @@
+/* Styles */
+
+#page_content { overflow: hidden }
+
+#hero_title { background-color: #3e454f; padding: 30px 0 30px; }
+#hero_title h1 { text-transform:uppercase}
+#hero_title h1:after { content: ''; display: block; width: 150px; height: 3px; background-color: rgba(255,255,255,1.00); margin: 10px auto 0; }
+
+.t-bg { background: url(../img/title-area-bg.jpg) no-repeat; background-size: cover; background-position: center }
+
+.dashboard-menu { position: relative; display: block; background-color: #3e454f; padding: 15px 0px; }
+.dashboard-menu ul { }
+.dashboard-menu ul li { margin: 0 15px; display: inline-block }
+.dashboard-menu ul li a { color: #fff }
+
+.text-muted { opacity:0.3}
+
+.tabs.gift-list.v-blue * { color:rgba(255,255,255,1.00)}
+
+.tabs.gift-list.v-blue .indicator {
+    background-color:  #FFFFFF;
+}

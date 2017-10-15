@@ -1,0 +1,27 @@
+CURRENT API VERSION: 2.0
+------------------------
+This file contains a list of API revisions and the breaking changes that may
+affect developers of modules integrating with Address Field Lookup.
+
+API VERSION 2.0
+---------------
+* Refactored setLookupTerm(), lookup() and getLookupResult() functions into a
+  single function - lookup($term). This function now accepts the search term
+  as a required paramater and returns either the array of search results or
+  FALSE if no results could be found.
+
+* All integrating modules must define a 'object factory' key in their
+  implementation of hook_addressfield_lookup_service_info. This key refers to
+  a function responsible for instantiating the PHP class that implements the
+  AddressFieldLookupInterface interface. The function receives the service info
+  array as a parameter.
+
+* hook_addressfield_lookup_get_service_object no longer exists. Any module
+  functions implementing this hook will not be invoked. See the 'object factory'
+  details in the above bullet point and the example module which can be found
+  in tests/modules/addressfield_lookup_example.
+
+* The functions addressfield_lookup_get_addresses() and
+  addressfield_lookup_get_address_details() no longer accept a $show_errors
+  parameter. The 2nd parameter on both functions is now the cache reset
+  parameter. See addressfield_lookup.module for more details.

@@ -1,0 +1,63 @@
+<?php
+
+/**
+   * @file
+   *
+   * A Views' field handler for editing a node title.
+   *
+   */
+class commerce_atcb_field_handler_add_to_list_btn  extends views_handler_field {
+  function construct() {
+    parent::construct();
+    $this->additional_fields['product_id'] = 'product_id';    
+  }
+
+  function query() {
+    $this->ensure_my_table();
+    $this->add_additional_fields();
+  }
+  
+   /**
+   * Render the field.
+   *
+   * @param $values
+   *   The values retrieved from the database.
+   */
+  function render($values) {
+    ctools_include('ajax');
+    ctools_include('modal');
+    drupal_add_js(array(
+      'cart-button-popup' => array(
+        'modalSize' => array(
+          'type' => 'fixed',
+          'width' => 550,
+          'height' => 300,
+        ),
+        'modalOptions' => array(
+          'opacity' => .5,
+          'background-color' => '#000',
+        ),
+        'animation' => 'fadeIn',
+        'animationSpeed'=> 'fast',
+        'modalTheme' => 'CToolsULModal',
+        'throbber' => '',//theme('image', array('path' => ctools_image_path('loading_animation.gif', 'modal_forms'), 'alt' => t('Loading...'), 'title' => t('Loading'))),
+        'closeText' => '',//t('Close'),
+      ),
+    ), 'setting');
+    
+    ctools_modal_add_js();    
+    ctools_add_js('commerce_atcb', 'commerce_atcb');
+    ctools_add_css('commerce_atcb', 'commerce_atcb');
+    $product_id = $this->get_value($values, 'product_id');    
+    $button_text = t('Add to List');
+    $button_url = 'add_to_list/nojs/' . $product_id;
+    $result[] = l($button_text, $button_url, array(
+      'attributes' => array('class' => array('left','ctools-use-modal', 'ctools-modal-cart-button-popup'), 'title' => $button_text),
+      'query' => array('destination' => $_GET['q']),
+    ));
+    
+    $element[0]['#markup'] = $result[0]; // Assign it to the #markup of the element    
+    return $element;
+  }
+
+}

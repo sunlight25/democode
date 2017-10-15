@@ -1,0 +1,218 @@
+<?php
+
+/**
+ *  Implementation of hook_menu()
+ */
+function viamogiftlist_menu() {
+    
+      $items['add_to_list/%ctools_js/%'] = array(
+        'title' =>'Add to Gift list',
+        'page callback' => 'viamo_gift_add_to_list',
+        'page arguments' => array(1, 2),
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+      );
+      
+      return $items;      
+}
+
+
+/*
+ * Implements hook_menu_alter(). 
+ * Below Function Use For change title
+ */
+function viamogiftlist_menu_alter(&$items) {        
+    $items['user/%user/registry/new/gift']['title callback'] = 'viamogiftlist_user_page_title';        
+    $items['registry/%commerce_registry_url']['title callback'] = 'viamogiftlist_view_gift_list_page_title';        
+    $items['registry/%commerce_registry_url/edit']['title callback'] = 'viamogiftlist_edit_gift_list_page_title';            
+    
+}
+
+function viamogiftlist_user_page_title() {
+    $output='';
+    if(preg_match("/^user\/[0-9]{1,}\/registry\/new\/gift$/", $_GET['q'])) { 
+        $output = t('Gift List');                       
+        drupal_set_title($output);    // to make sure you change the title even if you are using views within the profile
+        return $output;
+    } else{
+        return $output;
+    }
+}
+
+function viamogiftlist_edit_gift_list_page_title() {
+    
+    if(preg_match("/^registry\/[a-zA-Z0-9_]{1,}\/edit$/", $_GET['q'])) {        
+        $output = t('Edit Gift List');                        
+    } else {
+        $output = t('View Gift List');                
+    }        
+    drupal_set_title($output);    // to make sure you change the title even if you are using views within the profile
+    return $output;
+    
+}
+
+function viamogiftlist_view_gift_list_page_title() {        
+    $output = t('View Gift List');                
+    drupal_set_title($output);    // to make sure you change the title even if you are using views within the profile
+    return $output;
+    
+}
+
+
+/**
+ * Implements hook_views_api().
+ * 
+ */
+function viamogiftlist_views_api() {
+    return array(
+        'api' => 3,
+        'path' => drupal_get_path('module','viamogiftlist'). '/views',
+    );    
+}
+
+/**
+ * Whether a given user has access to the operation on the registry.
+ * Custom function for user remove product from Gift List
+ */
+function commerce_registry_has_access_custom_function($op, $registry, $account = NULL) {    
+  global $user;  
+  if (empty($account)) {
+    $account = $user;
+  }     
+  if ($registry->owner_uid != $account->uid) {      
+    // Not the registry owner, check access.
+    $access = commerce_registry_registry_get_access_settings($registry->registry_id, TRUE);
+           
+    // First check role access.
+    foreach ($account->roles as $rid => $name) {       
+      if (isset($access['role'][$op]) && in_array($rid, $access['role'][$op])) {          
+        return TRUE;
+      }
+    }
+    // Then check user access.
+    if (isset($access['user'][$op]) && in_array($account->uid, $access['user'][$op])) {        
+      return TRUE;
+    }
+  }
+  else {        
+    return TRUE;
+  }  
+  return FALSE;
+}
+
+/*
+ * Get Node path aliase base on product_id  
+ * @use to gift list url display
+ * @author $urya
+ */
+
+function viamogiftlist_product_display_node_path($product) {
+  $path = '';
+  $path_aliase ='';
+  // 'field_product' in the entityCondition() is the machine name of the content
+  // type 'Product reference field'
+  if($product->product_id!='') {
+    $query = new EntityFieldQuery;
+    $query->entityCondition('entity_type', 'node', '=')
+     ->fieldCondition('field_product_variations', 'product_id', $product->product_id, '=')
+     ->range(0, 1);
+
+    if ($result = $query->execute()) {
+      $keys = array_keys($result['node']);
+      $nid = $result['node'][$keys[0]]->nid;
+      $path = 'node/' . $nid;
+       $path_aliase = drupal_get_path_alias($path);
+    } 
+  }
+  return $path_aliase;
+}
+
+
+/*
+ *  Get purchase product count base on gift list
+ *  @param $giftListId is giftlistid(registry_id) 
+ *  @param $productId is product Id(product_id)
+ *  @author $urya
+ */
+
+function getPurchaseproductCount($giftListId,$productId) {          
+    if(intval($giftListId)>0) {        
+         $query = db_select('commerce_registry_purchased','crp')
+            ->fields('crp',array('product_id'))
+            ->condition('crp.registry_id', $giftListId);
+            //->condition('crp.product_id', $giftListUserId);
+          $query->addExpression('sum(crp.quantity)', 'product_count');
+          $query->groupBy("crp.product_id");
+          $query->having('product_id = :productId', array(':productId' => $productId));
+          $results = $query->execute()->fetchAll();                                   
+        return $results;
+    } else{
+        return '';
+    }        
+}
+
+ 
+/**
+ * Add to List page callback
+ */
+
+function viamo_gift_add_to_list($js, $prod_ids) {        
+  $product_ids = explode('-', $prod_ids);
+  $products = commerce_product_load_multiple($product_ids);
+  $commerce_form_id = commerce_cart_add_to_cart_form_id($product_ids);
+ 
+  $line_item = NULL;
+  if (!empty($products)) {
+    $type = 'product';
+    $line_item = commerce_product_line_item_new(reset($products), 1, 0, array(), $type);
+    $line_item->data['context']['product_ids'] = array_keys($products);
+    $line_item->data['context']['add_to_cart_combine'] = 1;
+//     $line_item->data['context']['show_single_product_attributes'] = 1;
+  }
+ 
+  $view_mode = 'line_item';
+ 
+  //$cart_form = drupal_get_form($commerce_form_id, $line_item, TRUE, array('view_mode' => $view_mode));
+  $form_state = array(
+    'title' => '<h4 class="mb-4"><i class="fa mr-2 fa-shopping-cart v-gold-text" aria-hidden="true"></i>'.t('Add this product to your Gift List').'</h4>',
+    'ajax' => $js,
+    're_render' => !$js,
+    'no_redirect' => $js,
+    'commerce_atcb_add_to_cart' => TRUE,
+  );
+  $form_state['build_info']['args'] = array($line_item, TRUE, array('view_mode' => $view_mode)); // fix view_mode pt field
+  $cart_form = drupal_build_form($commerce_form_id, $form_state);
+  $cart_form['submit']['#access'] = FALSE;
+  $cart_form['checkout']['#access'] = FALSE;
+  $cart_form['quantity']['#access'] = FALSE;    
+  $registries = $form_state['values']['commerce_registry']['registry'];      
+  $cart_form['products'] = entity_view('commerce_product', $products, $view_mode/*, $GLOBALS['language']->language, 1*/);    //dpm($cart_form);
+  if (!$js) {
+    return $cart_form;
+  }
+ 
+  ctools_include('modal');
+  ctools_include('ajax');
+  ctools_add_js('ajax-responder');
+ 
+  $commands = ctools_modal_form_render($form_state, $cart_form);
+ 
+  // Handle submitted form.
+  if (!empty($form_state['executed'])) {
+    $commands = array();
+    $commands[] = ctools_modal_command_dismiss();    
+    foreach ($registries as $registry_id => $registry_nothing) {
+        $registry = commerce_registry_load($registry_id);                        
+        $vars = array(
+          '!product' => '<em>' . $product->title . '</em>',
+          '!registry' => '<em>' . l($registry->name, 'registry/' . $registry->url) . '</em>',
+        );
+        drupal_set_message(t('Added !product to !registry.', $vars));
+      }       
+ // if ($form_state['values']['op'] == t('Add to cart & checkout')) {
+      $commands[] = ctools_ajax_command_redirect($_GET['destination']);
+//}
+  }
+ 
+  print ajax_render($commands);
+}

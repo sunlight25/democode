@@ -1,0 +1,678 @@
+<?php
+/**
+ * @file
+ * Main Commerce Registry code.
+ */
+
+module_load_include('inc', 'commerce_registry', 'includes/commerce_registry.entity');
+
+/**
+ * Implements hook_help().
+ */
+function commerce_registry_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#commerce_registry':
+      return t('Commerce Registry help.');
+      break;
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function commerce_registry_menu() {
+    global $user;
+    $menu = array();
+    $menu['user/%user/registry'] = array(
+      'title' => t('My Registries'),
+      'page callback' => 'commerce_registry_user_registry_page',
+      'access arguments' => array('view commerce_registry'),
+      'file' => 'includes/commerce_registry.pages.inc',
+      'type' => MENU_LOCAL_TASK,
+    );
+  
+    $menu['user/%user/registry/list'] = array(
+      'type' => MENU_DEFAULT_LOCAL_TASK,
+      'title' => 'List',
+      'page callback' => 'commerce_registry_user_registry_page',
+      'access arguments' => array('view commerce_registry'),
+      'file' => 'includes/commerce_registry.pages.inc',
+      'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+    );
+  
+    $menu['user/%user/registry/new'] = array(
+      'type' => MENU_LOCAL_TASK,
+      'title' => 'New Registry',
+      'page callback' => 'commerce_registry_new_registry_page',
+      'access callback' => 'commerce_registry_create_access',
+      'file' => 'includes/commerce_registry.pages.inc',
+      'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+    );
+          
+  foreach (commerce_registry_types() as $type => $info) {
+    $menu['user/%user/registry/new/'.$type] = array(
+      'type' => MENU_LOCAL_TASK,
+      'title' => 'New Registry',
+      'page callback' => 'drupal_get_form',
+      //
+      //'page arguments' => array('commerce_registry_registry_new_form',$type),
+      'page arguments' => array('commerce_registry_registry_new_form',4),
+      'access callback' => 'commerce_registry_create_access',
+      'access arguments' => array($type),
+      'file' => 'includes/commerce_registry.forms.inc',
+    );
+  }
+  $menu['registry/%commerce_registry_url'] = array(
+    'page callback' => 'commerce_registry_view',
+    'page arguments' => array(1),
+    'title callback' => 'commerce_registry_get_title',
+    'title arguments' => array(1),
+    'access callback' => 'commerce_registry_registry_access',
+    'access arguments' => array('view', 1, NULL, 'commerce_registry'),
+    'type' => MENU_CALLBACK,
+  );
+  $menu['registry/%commerce_registry_url/view'] = array(
+    'page callback' => 'commerce_registry_view',
+    'page arguments' => array(1),
+    'title' => 'View',
+    'access callback' => 'commerce_registry_registry_access',
+    'access arguments' => array('view', 1, NULL, 'commerce_registry'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => 0,
+  );
+  $menu['registry/%commerce_registry_url/edit'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('commerce_registry_edit_form', 1),
+    'title' => 'Edit',
+    'access callback' => 'entity_access',
+    'access arguments' => array('edit', 'commerce_registry', 1,$user),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 1,
+    'file' => 'includes/commerce_registry.forms.inc',
+  );
+  $menu['registry/%commerce_registry_url/delete'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('commerce_registry_delete_form', 1),
+    'title' => 'Delete',
+    'access callback' => 'entity_access',
+    'access arguments' => array('delete', 'commerce_registry', 1),
+    'type' => MENU_CALLBACK,
+  );
+  // @TODO: Public registry list.
+  // @TODO: Registry search
+  return $menu;
+}
+
+/**
+ * Custom wildcard loader to load a registry by the URL.
+ */
+function commerce_registry_url_load($url) {
+  return commerce_registry_load_by_url($url);
+}
+
+/**
+ * Viewing a registry.
+ */
+function commerce_registry_view($registry) {
+  // Check if the user has permission to view a registry.
+  if (!commerce_registry_registry_access('view', $registry)) {
+    return t('You don\' have permission to view this registry.');
+  }
+  // If the user does not have access to view this registry, then show the
+  // registry's login form.
+  
+  //echo "<pre>";
+  //print_r($registry); exit;
+  
+  if (!commerce_registry_has_access('view', $registry)) {
+    module_load_include('inc', 'commerce_registry', 'includes/commerce_registry.forms');
+    return drupal_get_form('commerce_registry_registry_login_form', $registry);
+  }
+  //echo "<pre>";
+  //print_r($registry); exit;
+  
+  return theme('commerce_registry_view', array('registry' => $registry));
+}
+
+/**
+ * Get the title of a registry.
+ */
+function commerce_registry_get_title($registry) {
+  $type = commerce_registry_type_load($registry->type);
+  $title = $type->label . ': ' . $registry->name;
+  return $title;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function commerce_registry_permission() {
+  $perms['administer commerce_registry types'] = array(
+    'title' => t('Administer Commerce Registry types'),
+    'description' => t('Manage fields and settings for Commerce Registry types.'),
+  );
+  $perms['bypass commerce_registry password'] = array(
+    'title' => t('Bypass Registry Password'),
+    'description' => t('Bypass the login requirement for all commerce registries.'),
+    'restrict access' => TRUE,
+  );
+  $perms['view commerce_registry'] = array(
+    'title' => t('View Commerce Registry'),
+  );
+  $perms['create commerce_registry'] = array(
+    'title' => t('Create any Commerce Registry'),
+    'description' => t('Create a registry of any type.'),
+  );
+  $perms['edit commerce_registry all'] = array(
+    'title' => t('Edit any Commerce Registry'),
+    'description' => t('Edit a registry of any type.'),
+  );
+  $perms['edit commerce_registry own'] = array(
+    'title' => t('Edit Own Commerce Registry'),
+    'description' => t('Edit own registries of any type.'),
+  );
+  $perms['delete commerce_registry all'] = array(
+    'title' => t('Delete any Commerce Registry'),
+    'description' => t('Delete a registry of any type.'),
+  );
+  $perms['delete commerce_registry own'] = array(
+    'title' => t('Delete Own Commerce Registry'),
+    'description' => t('Delete own registries of any type.'),
+  );
+  foreach (commerce_registry_types() as $type => $info) {
+    $perm = $type . ' commerce_registry';
+    $perms['create ' . $perm] = array(
+      'title' => t('@perm: Create Commerce Registry', array('@perm' => $info->label)),
+    );
+    $perms['edit any ' . $perm] = array(
+      'title' => t('@perm: Edit Any Commerce Registry', array('@perm' => $info->label)),
+    );
+    $perms['edit own ' . $perm] = array(
+      'title' => t('@perm: Edit Own Commerce Registry', array('@perm' => $info->label)),
+    );
+    $perms['delete any ' . $perm] = array(
+      'title' => t('@perm: Delete Any Commerce Registry', array('@perm' => $info->label)),
+    );
+    $perms['delete own' . $perm] = array(
+      'title' => t('@perm: Delete Own Commerce Registry', array('@perm' => $info->label)),
+    );
+  }
+  return $perms;
+}
+
+/**
+ * Checks if the user can view the create registry page.
+ */
+function commerce_registry_create_access($registry_type = NULL) {    
+  if (!empty($registry_type)) {
+    $perm = 'create ' . $registry_type . ' commerce_registry';
+    if (user_access($perm)) {        
+      return TRUE;
+    }
+    return FALSE;
+  }
+  foreach (commerce_registry_types() as $type => $info) {
+    $perm = 'create ' . $type . ' commerce_registry';
+    if (user_access($perm)) {        
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * Registry access callback.
+ *
+ * @param string $op
+ *   The operation to check (add, remove, view).
+ * @param object $registry
+ *   The registry entity.
+ * @param object $account
+ *   The account to check.
+ * @param string $entity_type
+ *   The type of the registry entity.
+ *
+ * @return boolean
+ *   Whether a user can access the given registry operation.
+ */
+function commerce_registry_registry_access($op, $registry, $account = NULL, $entity_type = NULL) {
+  $permission = $op . ' ' . $registry->type . ' commerce_registry';
+  $has_permission = FALSE;
+  // Now check permissions.
+  switch ($op) {
+    case 'create':
+      $has_permission = (user_access('create commerce_registry', $account)
+        || user_access($permission, $account));
+      break;
+    case 'edit':  
+    if(isset($_GET['q'])) {
+        $registryArr=explode('/',$_GET['q']);                
+        $registryID = $registryArr[1];                     
+        //$registryID = end($registryArr);                     
+    }  
+    
+    $has_permission = (user_access('edit commerce_registry all', $account)
+        || user_access($permission, $account));                
+        global $user;                      
+        // Start customization accourding to  our requirment{16/06/2017}
+        if ($user->uid != 0 && $registryID!='') {            
+            $query = db_select('commerce_registry', 'cr');
+            $query->join('commerce_registry_urls', 'c_url', 'c_url.registry_id = cr.registry_id');
+            $query->fields('cr', array('registry_id'))
+                    ->condition('c_url.url', $registryID,'=')
+                    ->condition('cr.owner_uid', $user->uid,'=');
+                     //->condition('cr.status',1,'=');                          
+          $result=$query->execute();          
+          $checkResult = $result->rowCount();                                        
+          ($checkResult==0)?$has_permission=0:$has_permission=1;          
+        } else {
+            $has_permission=0;
+        }
+        //END customization accourding to  our requirment{16/06/2017}
+      break;
+    case 'delete':
+      $has_permission = (user_access('delete commerce_registry all', $account)
+        || user_access($permission, $account));        
+      break;
+    default:        
+       $has_permission = user_access('view commerce_registry', $account); 
+       if(isset($_GET['q']) && $has_permission) {
+            global $user;                            
+            if(!in_array('Standard Account(Host or Guest)',$user->roles)) {
+                $registryArr=explode('/',$_GET['q']);                
+                $registryID = $registryArr[1];                                 
+                $query = db_select('commerce_registry', 'cr');
+                $query->join('commerce_registry_urls', 'c_url', 'c_url.registry_id = cr.registry_id');
+                $query->fields('cr', array('registry_id'))
+                        ->condition('c_url.url', $registryID,'=')
+                        ->condition('cr.owner_uid', $user->uid,'!=')
+                        ->condition('cr.status',1,'=');                          
+              $result=$query->execute();          
+              $checkResult = $result->rowCount();                                        
+              ($checkResult==0)?$has_permission=0:$has_permission=1;       
+            }
+        }   
+       
+  }        
+  return $has_permission;
+}
+
+/**
+ * Whether a given user has access to the operation on the registry.
+ */
+function commerce_registry_has_access($op, $registry, $account = NULL) {    
+  global $user;
+  
+  if (empty($account)) {
+    $account = $user;
+  }  
+  //echo $registry->public; exit;
+  if ($registry->public === '1') {             
+    return TRUE;
+  }
+  
+  // User has already logged in, cookie exists.
+  if (isset($_COOKIE['commerce_registry_view_' . $registry->registry_id])
+    && $_COOKIE['commerce_registry_view_' . $registry->registry_id] == 1
+    && $op == 'view') {                  
+    return TRUE;
+  }  
+  if ($registry->owner_uid != $account->uid) {      
+    // Not the registry owner, check access.
+    $access = commerce_registry_registry_get_access_settings($registry->registry_id, TRUE);
+           
+    // First check role access.
+    foreach ($account->roles as $rid => $name) {       
+      if (isset($access['role'][$op]) && in_array($rid, $access['role'][$op])) {          
+        return TRUE;
+      }
+    }
+    // Then check user access.
+    if (isset($access['user'][$op]) && in_array($account->uid, $access['user'][$op])) {        
+      return TRUE;
+    }
+  }
+  else {        
+    return TRUE;
+  }  
+
+  return FALSE;
+}
+
+/**
+ * Commerce Registry type access callback.
+ */
+function commerce_registry_type_access($op, $registry, $account = NULL, $entity_type = NULL) {
+  return user_access('administer commerce_registry types', $account);
+}
+
+/**
+ * Returns an array of access settings.
+ *
+ * @code
+ * $settings = array(
+ *   'user' => array(
+ *     'add' => array(1),
+ *     'remove' => array(1),
+ *     'view' => array(1),
+ *   ),
+ *   'role' => array(
+ *     'add' => array(),
+ *     'remove' => array(),
+ *     'view' => array(),
+ *   ),
+ * );
+ * @endcode
+ */
+function commerce_registry_registry_get_access_settings($registry_id, $reset = FALSE) {
+  $settings = &drupal_static(__FUNCTION__, NULL, $reset);
+  if (empty($settings)) {
+    // No settings cache, so we build the cache from scratch.
+    $admin = user_role_load_by_name('administrator');
+    $access = db_select('commerce_registry_access', 'cra')
+      ->fields('cra', array(
+        'access_id',
+        'access_type',
+        'allowed_methods',
+        'registry_id',
+      ))
+      ->execute();
+    foreach ($access as $setting) {
+      // Initialize the blank settings array.
+      // User ID 1 (admin) has all permissions.
+      $settings[$setting->registry_id] = array(
+        'role' => array(
+          'add' => array($admin->rid),
+          'remove' => array($admin->rid),
+          'view' => array($admin->rid),
+        ),
+        'user' => array(
+          'add' => array(1),
+          'remove' => array(1),
+          'view' => array(1),
+        ),
+      );
+      if (is_string($setting->allowed_methods)) {
+        $setting->allowed_methods = unserialize($setting->allowed_methods);
+      }
+      foreach ($setting->allowed_methods as $method) {
+        // Add each access id to it's specific user/role and method array.
+        $settings[$setting->registry_id][$setting->access_type][$method][] = $setting->access_id;
+      }
+    }
+  }
+  elseif (!isset($settings[$registry_id]) || empty($settings[$registry_id])) {
+    // No settings cache for this registry, so we build from scratch.
+    // User ID 1 (admin) has all permissions.
+    $admin = user_role_load_by_name('administrator');
+    $settings[$registry_id] = array(
+      'role' => array(
+        'add' => array($admin->rid),
+        'remove' => array($admin->rid),
+        'view' => array($admin->rid),
+      ),
+      'user' => array(
+        'add' => array(1),
+        'remove' => array(1),
+        'view' => array(1),
+      ),
+    );
+    $access = db_select('commerce_registry_access', 'cra')
+      ->fields('cra', array('access_id', 'access_type', 'allowed_methods'))
+      ->condition('registry_id', $registry_id)
+      ->execute();
+    foreach ($access as $setting) {
+      if (is_string($setting->allowed_methods)) {
+        $setting->allowed_methods = unserialize($setting->allowed_methods);
+      }
+      foreach ($setting->allowed_methods as $method) {
+        // Add each access id to it's specific user/role and method array.
+        $settings[$registry_id][$setting->access_type][$method][] = $setting->access_id;
+      }
+    }
+  }
+  // Let other modules modify the settings as necessary.
+  // Modules need to accept the $settings array by reference to make changes.
+  module_invoke_all('commerce_registry_access_settings', $registry_id, $settings[$registry_id]);
+  return $settings[$registry_id];
+}
+
+/**
+ * Implements hook_hook_info().
+ */
+function commerce_registry_hook_info() {
+  return array(
+    'commerce_registry_access_settings' => array(
+      'group' => 'commerce_registry',
+    ),
+    'commerce_registry_insert' => array(
+      'group' => 'commerce_registry',
+    ),
+    'commerce_registry_view' => array(
+      'group' => 'commerce_registry',
+    ),
+    'commerce_registry_update' => array(
+      'group' => 'commerce_registry',
+    ),
+    'commerce_registry_delete' => array(
+      'group' => 'commerce_registry',
+    ),
+    'commerce_registry_product_insert' => array(
+      'group' => 'commerce_registry',
+    ),
+    'commerce_registry_product_add' => array(
+      'group' => 'commerce_registry',
+    ),
+    'commerce_registry_product_purchased' => array(
+      'group' => 'commerce_registry',
+    ),
+    'commerce_registry_generate_registry_url' => array(
+      'group' => 'commerce_registry',
+    ),
+  );
+}
+
+/**
+ * Implements hook_theme().
+ */
+function commerce_registry_theme($existing, $type, $theme, $path) {
+  $themes['commerce_registry_user_registry_list'] = array(
+    'variables' => array(
+      'account' => NULL,
+      'registries' => NULL,
+    ),
+    'file' => 'includes/commerce_registry.theme.inc',
+  );
+  $themes['commerce_registry_view'] = array(
+    'variables' => array('registry' => NULL),
+    'file' => 'includes/commerce_registry.theme.inc',
+  );
+  $themes['commerce_registry_product_view'] = array(
+    'variables' => array(
+      'product' => NULL,
+      'registry' => NULL,
+      'settings' => NULL,
+    ),
+    'file' => 'includes/commerce_registry.theme.inc',
+  );
+  $themes['commerce_registry_product_in_cart'] = array(
+    'variables' => array('product' => NULL),
+    'file' => 'includes/commerce_registry.theme.inc',
+  );
+  $themes['commerce_registry_access_checkboxes'] = array(
+    'file' => 'includes/commerce_registry.theme.inc',
+    'render element' => 'form',
+  );
+
+  return $themes;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function commerce_registry_block_info() {
+  $blocks['commerce_registry_user_registry'] = array(
+    'info' => t("Commerce Registry: User's Registry List"),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function commerce_registry_block_view($delta = '') {
+  switch ($delta) {
+    case 'commerce_registry_user_registry':
+      global $user;
+      $block['subject'] = t("My Registries");
+      module_load_include('inc', 'commerce_registry', 'includes/commerce_registry.pages');
+      $block['content'] = commerce_registry_user_registry_page();
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function commerce_registry_form_alter(&$form, &$form_state, $form_id) {
+  if (substr($form_id, 0, 30) == 'commerce_cart_add_to_cart_form') {
+    $registries = commerce_registry_load_user_registries();
+    $options = array();
+    $registry_id_array = array();
+    foreach ($registries as $registry_id => $registry) {
+      $options[$registry_id] = $registry->name;
+      $registry_id_array[] = $registry_id;
+    }
+    if (!empty($registries)) {
+      $form['commerce_registry_add'] = array(
+        '#type' => 'markup',
+        //'#markup' => '<a href="#" class="add_to_registry_click">Add to a Registry</a>',
+        '#attached' => array(
+          'js' => array(
+            drupal_get_path('module', 'commerce_registry') . '/js/add_to_registry.js',
+          ),
+        ),
+      );
+      $form['commerce_registry_hidden'] = array(
+        '#type' => 'hidden',
+        '#value' => 1,
+      );
+      $form['commerce_registry'] = array(
+        '#type' => 'fieldset',
+        '#tree' => TRUE,
+        //'#title' => t('Your Available Registries'),
+        '#attributes' => array(
+         // 'style' => 'display: none;',
+        ),
+      );
+      $form['commerce_registry']['quantity'] = array(                                     
+        '#type' => 'textfield', 
+         '#title' => t('Quantity'),
+        '#attributes' => array(
+             'class' => array('0' => 'commerce-registry-quantity'),'placeholder'=>"Quantity"
+        ),         
+        '#required' => TRUE,
+        '#default_value' => 1,
+      );  
+      $form['commerce_registry']['registry'] = array(
+        '#type' => 'checkboxes',
+        '#required' => TRUE,
+        '#options' => $options,
+        '#default_value' => $registry_id_array,
+        '#attributes' => array(
+             'class' => array('0' => 'commerce-registry-name')
+        ), 
+      );                                               
+      if(isset($form_state['context']['entity'])){
+          $page = node_uri($form_state['context']['entity']);
+          $page = $page['path'];
+      } else{
+          $page='';
+      }                
+      $form['commerce_registry']['page'] = array(
+        '#type' => 'hidden',
+        '#value' => $page,
+      );
+      
+      $form['commerce_registry']['add_to_registry'] = array(
+        '#type' => 'submit',
+        '#value' => t('Add to Gift List'),
+        '#submit' => array('commerce_registry_product_add_submit'),
+      );
+    }
+  }
+}
+
+/**
+ * Submit handler to add product to a registry.
+ */
+function commerce_registry_product_add_submit($form, $form_state) {
+  global $user;
+  $product = $form_state['values']['product_id'];
+  $product = commerce_product_load($product);
+  //$quantity = $form_state['values']['quantity'];
+  $quantity = $form_state['values']['commerce_registry']['quantity'];
+  $message ='';  
+  $registries = $form_state['values']['commerce_registry']['registry'];
+  $registries = array_flip($registries);
+  unset($registries[0]);
+  $page = $form_state['values']['commerce_registry']['page'];
+  foreach ($registries as $registry_id => $registry_nothing) {
+    $registry = commerce_registry_load($registry_id);        
+    //$registry->addProduct($product, $page);
+    $registry->addProduct($product, $page, $message, $quantity);
+    
+    $registry->save();
+    $vars = array(
+      '!product' => '<em>' . $product->title . '</em>',
+      '!registry' => '<em>' . l($registry->name, 'registry/' . $registry->url) . '</em>',
+    );
+    drupal_set_message(t('Added !product to !registry.', $vars));
+  }
+}
+
+/**
+ * Implements hook_forms().
+ */
+function commerce_registry_forms($form_id, $args) {
+  $forms = array();
+  foreach (commerce_registry_types() as $type => $info) {
+    $edit_form_id = 'commerce_registry_type_edit_' . $type . '_form';
+    $forms[$edit_form_id] = array(
+      'callback' => 'commerce_registry_type_form',
+    );
+  }
+  if (substr($form_id, 0, 43) == 'commerce_registry_product_add_to_cart_form_') {
+    $forms[$form_id] = array(
+      'callback' => 'commerce_registry_product_add_to_cart_form',
+    );
+  }
+  if (substr($form_id, 0, 33) == 'commerce_registry_remove_product_') {
+    $forms[$form_id] = array(
+      'callback' => 'commerce_registry_remove_product_form',
+    );
+  }
+  return $forms;
+}
+
+/**
+ * Helper function to get the user's Commerce order number from the session.
+ */
+function commerce_registry_get_user_order() {
+  global $user;
+  if ($user->uid != 0) {
+    $q = db_select('commerce_order', 'co')
+      ->fields('co', array('order_id'))
+      ->condition('uid', $user->uid)
+      ->condition('status', array('pending', 'completed'), 'NOT IN')
+      ->execute()
+      ->fetchCol();
+    if (!empty($q)) {
+      return $q[0];
+    }
+  }
+  return 0;
+}

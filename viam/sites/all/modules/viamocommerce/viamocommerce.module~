@@ -1,0 +1,15 @@
+<?php
+/**
+ * Implements hook_form_alter().
+ */
+function viamocommerce_form_alter(&$form, $form_state, $form_id) {
+  switch ($form_id) {
+    case 'add_to_cart_form':
+            
+      break;
+  }
+}
+
+
+
+

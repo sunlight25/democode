@@ -1,0 +1,4 @@
+name = Viamo User
+description = Viamo User Login. 
+core = 7.x
+package = z

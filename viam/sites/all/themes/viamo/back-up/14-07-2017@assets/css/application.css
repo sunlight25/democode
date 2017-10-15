@@ -1,0 +1,318 @@
+/* CSS Document */
+
+html { font-size: 16px; }
+body { background-color: rgba(247,247,247,1.00); color: rgba(0,0,0,1.00); font-size: 0.8rem; line-height: 1.2rem; margin: 0; font-weight: 300 }
+
+/* Vimeo Typeography Settings */
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 { 
+	font-size: 1rem; line-height: 1rem; margin-bottom: 0.5rem; margin-top: 1rem; font-weight: 300
+}
+
+h1, .h1 { font-size: 2.5rem; line-height: 3rem }
+h2, .h2 { font-size: 2rem; line-height: 2.5rem }
+h3, .h3 { font-size: 1.75rem; line-height: 2.2rem; }
+h4, .h4 { font-size: 1.5rem; line-height: 1.8rem }
+h5, .h5 { font-size: 1.2rem; line-height: 1.4rem }
+h6, .h6 { font-size: 1rem; line-height: 1.3rem }
+
+.light { font-weight: 100 !important; }
+.norm { font-weight: 300 !important; }
+.bold { font-weight: 500 !important; }
+.xbold { font-weight: 700 !important }
+.xxbold { font-weight: 900 !important }
+
+p, li { font-size: 0.8rem; line-height: 1.2rem }
+
+a { text-decoration: none; color: rgba(0,0,0,1.00) }
+
+ul, ol { margin: 0; -webkit-padding-start: 0; }
+
+button:focus { outline: 0; background-color: inherit;
+}
+
+/* Vimeo Containers & Rows */
+
+.row.no-gutters .col { padding:0 !important}
+
+/* Vimeo Form Defaults */
+
+/* label color */
+.input-field label { color: #000 !important; }
+/* label focus color */
+.input-field input[type=text]:focus + label { color: #ac7b32 !important; }
+/* label underline focus color */
+.input-field input[type=text]:focus { border-bottom: 1px solid #ac7b32 !important; box-shadow: 0 1px 0 0 #ac7b32 !important; }
+/* valid color */
+.input-field input[type=text].valid { border-bottom: 1px solid #ac7b32 !important; box-shadow: 0 1px 0 0 #ac7b32 !important; }
+/* invalid color */
+.input-field input[type=text].invalid { border-bottom: 1px solid #ac7b32 !important; box-shadow: 0 1px 0 0 #ac7b32 !important; }
+/* icon prefix focus color */
+.input-field .prefix.active { color: #000 !important; }
+
+[type="checkbox"]:checked+label:before {
+    border-right: 2px solid #ac7b32 !important;
+    border-bottom: 2px solid #ac7b32 !important;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+font-weight: 100 !important;
+text-transform: uppercase;
+font-size: 11px;
+color: rgba(155,155,155,1.00)
+}
+::-moz-placeholder { /* Firefox 19+ */
+font-weight: 100 !important;
+text-transform: uppercase;
+font-size: 11px;
+color: rgba(155,155,155,1.00)
+}
+:-ms-input-placeholder { /* IE 10+ */
+font-weight: 100 !important;
+text-transform: uppercase;
+font-size: 11px;
+color: rgba(155,155,155,1.00)
+}
+:-moz-placeholder { /* Firefox 18- */
+font-weight: 100 !important;
+text-transform: uppercase;
+font-size: 11px;
+color: rgba(155,155,155,1.00)
+}
+
+/*
+	Vimeo Colours
+*/
+
+/* Helpers*/
+.v-gold-text { color: #ac7b32 }
+.v-blue-text { color: #3e454f }
+
+.v-gold { background-color: #ac7b32 }
+.v-blue { background-color: #3e454f }
+
+/* Change Materialize Defaults */
+.btn, .btn-large {
+    background-color: #ac7b32;
+}
+.btn:hover, .btn-large:hover {
+    background-color: #C48C39;
+}
+.btn.v-blue, .btn-large.v-blue {
+    background-color: #3e454f;
+}
+.btn.v-blue:hover, .btn-large.v-blue:hover {
+    background-color: #515B68;
+}
+.pagination li.active {
+    background-color: #ac7b32;
+}
+.pagination li a {
+    color: #ac7b32;
+}
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-large):not(.btn-floating) {
+    color: #ac7b32;
+}
+.tabs .tab a {
+    color: #ac7b32;
+}
+.tabs .tab a:hover, .tabs .tab a.active {
+    color: #ac7b32;
+}
+.tabs .indicator {
+    background-color: #ac7b32;
+}
+
+
+
+/*
+	None Specific
+*/
+
+#page_content { overflow: hidden }
+
+.hidden { display:none}
+
+.dual-column { -moz-column-count: 2; -moz-column-gap: 0px; -webkit-column-count: 2; -webkit-column-gap: 0px; column-count: 2; column-gap: 0px; }
+
+.verticle-align { width: 100%; min-width: 100%; display: table; position: relative; height: 100%; max-width: 100%; table-layout: fixed }
+.verticle-align-wrapper { display: table-cell; vertical-align: middle; max-width: 100%; }
+
+.vv-badge { position: absolute; top: -5px; right: -5px; height: 35px; width: 35px; background: url(../img/vv.png) no-repeat center; background-size: 15.5px 22px; background-color: #000000; z-index: 10 }
+
+.fa-heart-o:hover:before {
+    content: "\f004" !important;
+}
+
+.bg-style:before { position: absolute; background-color: #eaeaea; content: ""; top: 0; bottom: -420px; left: 0; display: block; right: 0; width: 300%; z-index: -1 }
+
+/*
+	Vimeo Header
+*/
+#page_loader { position: absolute; left: 0; right: 0; top: 39px; margin: 0 !important;}
+
+#site_header { display: block; width: 100%; position: relative; z-index: 100 }
+#site_header ul { margin: 0 }
+#site_header #top_bar { position: relative; display: block; background-color: #3e454f; padding: 10px;  }
+#site_header #top_bar span,
+#site_header #top_bar li a { color: rgba(255,255,255,1.00); }
+#site_header #top_bar:after { content: ''; display: block; clear: both; width: 100%; height: 0 }
+#site_header #top_bar ul li { display: inline-block; margin-left: 20px }
+#site_header #top_bar span,
+#site_header #top_bar li { font-size: 0.6rem; line-height: 0.6rem }
+
+#site_header .masthead { position: relative; padding-bottom: 0px }
+#site_header .masthead:after { content: ''; display: block; width: 100%; clear: both }
+#site_header .masthead .site_logo { background-image: url(../img/viamo-logo.png); background-repeat: no-repeat; background-position: 0; background-size: 248px 42px; width: 124px; height: 42px; display: inline-block; position: absolute; left: 50%; top: 20px; margin: 0; padding: 0; text-indent: -9999px; -moz-transform: translateX(-50%); -webkit-transform: translateX(-50%); -o-transform: translateX(-50%); -ms-transform: translateX(-50%); transform: translateX(-50%); 
+}
+#site_header .masthead .site_logo:hover { background-position: -124px 0;}
+#site_header .masthead .shopping-menu { padding: 0 20px }
+#site_header .masthead ul.shopping-menu li { display: inline-block; float: left; margin: 20px 10px; text-transform: uppercase; font-size: 0.7rem; line-height: 40px }
+#site_header .masthead ul.shopping-menu li a { line-height: 40px; display: block; color: #ac7b32;  }
+#site_header .masthead ul.shopping-menu li a span { display: none }
+#site_header .masthead ul.shopping-menu li a i { line-height: 40px; vertical-align: middle; margin-right: 5px; color: #3e454f; display: inline-block }
+#site_header .masthead ul.shopping-menu li:hover a i { color: #ac7b32 }
+#site_header .masthead ul.shopping-menu .hamburger-box { vertical-align: middle; height: 20px; position: relative; margin-right: 5px }
+#site_header .masthead ul.shopping-menu .hamburger-label { color: #ac7b32;  text-transform: uppercase }
+#site_header .masthead ul.shopping-menu .hamburger-inner,
+#site_header .masthead ul.shopping-menu .hamburger-inner:after,
+#site_header .masthead ul.shopping-menu .hamburger-inner:before { height: 2px }
+
+#site_header .masthead .main_nav { text-align: center; border-top: 1px solid #d6d6d6; border-bottom: 1px solid #3e454f; padding: 6px 0; position: absolute; bottom: 0; left: 0; right: 0 }
+#site_header .masthead .main_nav ul { display: inline-block; margin: 0 auto; }
+#site_header .masthead .main_nav ul li.main-list-item { display: inline-block; font-size: 13px; line-height: 14px; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 20px; font-weight: 700; }
+#site_header .masthead .main_nav ul li.current-menu-item a { color: #ac7b32 }
+#site_header .masthead .main_nav ul li:hover a { text-decoration: none }
+
+
+ul.dropdown-content li { padding: 0 30px 0 10px}
+ul.dropdown-content li a { font-weight:300}
+
+
+#site_header .masthead #header_search { display:none}
+#site_header .masthead #header_search input { border-bottom: none; border-top: 1px solid #d6d6d6;}
+
+#site_header .masthead.reversed { background-color: #3e454f; color: rgba(255,255,255,1.00) }
+#site_header .masthead.reversed li,
+#site_header .masthead.reversed li a,
+#site_header .masthead.reversed li a span { color: rgba(255,255,255,1.00) }
+#site_header .masthead.reversed ul.shopping-menu li a i { color: #fff; }
+#site_header .masthead.reversed ul.shopping-menu .hamburger-inner,
+#site_header .masthead.reversed ul.shopping-menu .hamburger-inner:after,
+#site_header .masthead.reversed ul.shopping-menu .hamburger-inner:before { background-color: rgba(255,255,255,1.00) }
+#site_header .masthead.reversed .site_logo { background-image: url(../img/viamo-logo-reversed.png) }
+
+#site_header.stick #main_header_on_scroll { top: 0px; padding-bottom: 0 }
+
+#main_header_on_scroll { position: fixed !important; top: -110px; left: 0; right: 0; -webkit-transition: all 0.3s ease-in-out; -moz-transition: all 0.3s ease-in-out; -ms-transition: all 0.3s ease-in-out; -o-transition: all 0.3s ease-in-out; transition: all 0.3s ease-in-out; }
+#main_header_on_scroll .site_logo { top: 20px }
+#main_header_on_scroll .hamburger { color: rgba(255,255,255,1.00) }
+#main_header_on_scroll.masthead ul.shopping-menu .hamburger-label { color: #fff}
+#main_header_on_scroll.masthead .site_logo { background-image: url(../img/viamo-icn-reversed.png) !important; background-size: 18px 21px; width: 18px; height: 21px;  }
+#main_header_on_scroll.masthead ul.shopping-menu li { margin: 10px 10px;}
+
+
+/* Footer */
+
+footer#site_footer { width: 100%; display: block; border-top: 1px solid rgba(233,233,233,1.00); box-sizing: border-box }
+footer#site_footer:after { content: ''; display: block; width: 100%; clear: both; }
+footer#site_footer h4 { font-size: 0.8rem; line-height: 0.8rem; color: #ac7b32; text-transform: uppercase; margin-bottom: 0.8rem; font-weight: 500 }
+footer#site_footer ul { margin: 0; padding: 0; list-style: none }
+footer#site_footer ul li a { color:rgba(123,123,123,1.00)}
+
+.page-footer p { font-weight:300; color: rgba(255,255,255,0.5);}
+.page-footer ul li { font-weight:300}
+.page-footer ul li a { color: rgba(255,255,255,0.5); }
+
+/*
+	Hero Title
+*/
+
+#hero_title { background: url(../img/title-area-bg.jpg) no-repeat #3e454f; background-size: cover; background-position: center; padding: 30px 0 40px; }
+#hero_title.large { padding: 80px 0 80px; }
+#hero_title h1 { text-transform:uppercase}
+#hero_title h1:after { content: ''; display: block; width: 150px; height: 3px; background-color: rgba(255,255,255,1.00); margin: 10px auto 0; }
+
+.h-search-filter { background-color: #EDEDED }
+
+/*
+	Front Page
+*/
+
+/* Slider */
+
+.slide-1 { background: url(../img/slides/slide-1-bg.jpg) no-repeat center; background-size: cover }
+.slide-2 { background: url(../img/slides/slide-2-bg.jpg) no-repeat center; background-size: cover }
+.slide-3 { background: url(../img/slides/slide-3-bg.jpg) no-repeat center; background-size: cover }
+
+.content-bottom { position: absolute; left: 0; right: 0; bottom: 200px}
+.content-bottom-left { position: absolute; left: 200px; right: 0; bottom: 200px}
+.content-bottom-right { position: absolute; left: 0; right: 200px; bottom: 200px}
+
+/*
+	Shop
+*/
+
+/* Products - Categories Product View */
+.product-item { margin-bottom: 40px; text-align: center }
+.product-item img { margin-bottom: 10px }
+.product-item .buttons-block { padding: 7.5px 0; margin: 0 auto; display: block; text-align: center }
+.product-item .buttons-block .buttons { display: inline-block; border-radius: 3px !important; border: 1px solid rgba(232,232,232,1.00); position: relative; overflow: hidden }
+.product-item .buttons-block .buttons a { font-size: 10px; text-transform: uppercase; font-weight: 900; padding: 5px 10px; display: inline-block; float: left; position: relative }
+.product-item .buttons-block .buttons a:hover { text-decoration: none }
+.product-item .buttons-block .buttons a.left { color: #3e454f }
+.product-item .buttons-block .buttons a.right { color: #b28649 }
+.product-item .buttons-block .buttons a.left:after { content: ''; width: 1px; height: 100%; display: inline-block; background-color: rgba(232,232,232,1.00); position: absolute; right: -1px; top: 0; }
+.product-item .buttons-block .buttons a.left:hover { color: rgba(62,69,79,0.6); }
+.product-item .buttons-block .buttons a.right:hover { color: rgba(178,134,73,0.6); }
+.product-item span.more-info { display: block; line-height: 0.8rem }
+.price { font-size: 14px; color: #3e454f; font-weight: 700; }
+
+/* Products - Single Product Page */
+.product-title-area { padding: 30px 0 }
+.product-title-area h3.item-name { margin: 0 0 10px; padding: 0; font-size: 30px; line-height: 30px; font-weight: 100 }
+.product-title-area h2.vendor { margin: 0 0 10px; padding: 0; font-size: 20px; line-height: 20px; text-transform: uppercase; font-weight: 700; }
+.product-title-area p span { font-style: italic; font-size: 20px }
+
+button.add-to-cart {  text-transform: uppercase; font-size: 10px; font-weight: 700;  }
+
+
+/*
+	Venues
+*/
+
+/* Venues - Listings View */
+
+.item-image { position: relative; margin-bottom: 10px; z-index: 9 }
+.item-image img { margin-bottom: 0 }
+.item-image div { background-color: rgba(62,69,79,0); position: absolute; top: 30px; bottom: 30px; left: 30px; right: 30px; opacity: 0; padding-top: 20%; -webkit-transition: all 0.4s ease-in-out; -moz-transition: all 0.4s ease-in-out; -ms-transition: all 0.4s ease-in-out; -o-transition: all 0.4s ease-in-out; transition: all 0.4s ease-in-out; text-align: center }
+.item-image div span { display: block }
+.item-image div .title { text-align: center; color: rgba(255,255,255,1.00); font-size: 14px; font-weight: 100; font-style: italic; margin-bottom: 30px; opacity: 0 }
+.item-image div .sub-title { text-align: center; color: rgba(255,255,255,1.00); font-size: 12px; font-weight: 700; text-transform: uppercase; display: inline-block; border-top: 3px solid #fff; padding-top: 5px; opacity: 0; letter-spacing: 0.2em; }
+.item-image:hover div .title,
+.item-image:hover div .sub-title { opacity: 1 }
+.item-image:hover div { background-color: rgba(62,69,79,0.8); opacity: 1; top: 0; bottom: 0; left: 0; right: 0; }
+
+/* APP Page */
+.list-ticks li { list-style: none; margin-bottom: 5px; }
+.list-ticks li:before { content: ''; display: inline-block; height: 1rem; width: 32px; background-image: url(../img/tick.png); background-size: contain; background-repeat: no-repeat; }
+
+.btn-viamo { background-color: rgba(40,48,58,0.6); border-color: #ffffff; color: #ffffff; padding: 0 20px; text-transform: uppercase; font-size: 12px }
+.btn-viamo:hover { background-color: rgba(40,48,58,1.00); color: #ffffff; }
+
+.background-1 { position: relative; background-color: transparent; }
+.background-1:before { content: ""; position: absolute; background: url(../img/screenshots_bg.jpg) no-repeat; width: 1200px; height: 1200px; background-size: contain; z-index: -1 }
+.background-1.bg-left:before { right: 50%; top: -75%; }
+.background-1.bg-right:before { left: 50%; top: -45%; }
+
+
+/* 
+	Dashboard 
+*/
+
+/* Dashboard Menu */
+
+.dashboard-menu { position: relative; display: block; background-color: #3e454f; padding: 15px 0px; }
+.dashboard-menu ul { }
+.dashboard-menu ul li { margin: 0 15px; display: inline-block }
+.dashboard-menu ul li a { color: #fff }

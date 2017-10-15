@@ -1,0 +1,5 @@
+name = Viamo Gift List
+description = Gift List create and remove product override the functionality of commerce_registry module. 
+core = 7.x
+package = z
+dependencies[] = commerce_registry

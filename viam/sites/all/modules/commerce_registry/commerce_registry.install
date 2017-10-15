@@ -1,0 +1,299 @@
+<?php
+/**
+ * @file
+ * Install scripts for Commerce Registry.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function commerce_registry_schema() {
+  $schema = array();
+
+  // Base registry table.
+  $schema['commerce_registry'] = array(
+    'description' => 'Information about each created registry.',
+    'fields' => array(
+      'registry_id' => array(
+        'type' => 'serial',
+        'description' => 'Registry unique identifier.',
+        'not null' => TRUE,
+      ),
+      'name' => array(
+        'type' => 'varchar',
+        'description' => 'Registry name as defined by the creator.',
+        'length' => 100,
+        'not null' => TRUE,
+      ),
+      'description' => array(
+        'description' => 'Registry description as defined by the creator.',
+        'type' => 'text',
+        'size' => 'normal',
+        'not null' => FALSE,
+      ),
+      'password' => array(
+        'description' => 'Registry password if required to view.',
+        'type' => 'varchar',
+        'length' => 100,
+      ),
+      'url' => array(
+        'description' => 'Registry access URL.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'owner_uid' => array(
+        'description' => 'Registry creator.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 1,
+      ),
+      'created' => array(
+        'description' => 'Registry creation timestamp.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'public' => array(
+        'description' => 'Registry public status. 0 for private, 1 for public.',
+        'type' => 'int',
+        'size' => 'tiny',
+        'default' => 0,
+        'not null' => TRUE,
+      ),
+      'status' => array(
+        'description' => 'Registry status, 0 for disabled, 1 for enabled.',
+        'type' => 'int',
+        'size' => 'tiny',
+        'default' => 1,
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'description' => 'Registry type.',
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+        'default' => 'registry',
+      ),
+      'settings' => array(
+        'description' => 'Additional registry settings.',
+        'type' => 'text',
+        'size' => 'medium',
+        'serialize' => TRUE,
+      ),
+    ),
+    'unique keys' => array(
+      'registry_url' => array('url'),
+    ),
+    'primary key' => array('registry_id'),
+  );
+
+  // Custom registry types.
+  $schema['commerce_registry_type'] = array(
+    'description' => 'Registry types.',
+    'fields' => array(
+      'registry_type_id' => array(
+        'type' => 'serial',
+        'description' => 'Registry type unique identifier.',
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+        'description' => 'Machine name of the registry type.',
+      ),
+      'label' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'description' => 'Human readable name of the registry type.',
+      ),
+      'description' => array(
+        'type' => 'text',
+        'size' => 'medium',
+        'description' => 'The description of this registry type.',
+      ),
+    ),
+    'primary key' => array('registry_type_id'),
+    'unique keys' => array(
+      'machine_name' => array('type'),
+    ),
+  );
+
+  // Products added to a registry.
+  $schema['commerce_registry_products'] = array(
+    'description' => 'Registry product entries.',
+    'fields' => array(
+      'registry_id' => array(
+        'type' => 'int',
+        'description' => 'Registry identifier.',
+        'not null' => TRUE,
+      ),
+      'product_id' => array(
+        'type' => 'int',
+        'description' => 'Product identifier.',
+        'not null' => TRUE,
+      ),
+      'quantity' => array(
+        'type' => 'int',
+        'description' => 'Quantity of the product on the registry.',
+        'not null' => TRUE,
+        'default' => 1,
+      ),
+      'message' => array(
+        'type' => 'text',
+        'size' => 'medium',
+        'description' => 'The message associated with this product on the registry.',
+      ),
+      'added_by_uid' => array(
+        'type' => 'int',
+        'description' => 'Product was added by this user.',
+        'not null' => TRUE,
+      ),
+      'added_time' => array(
+        'type' => 'int',
+        'description' => 'Timestamp this product was added to the registry.',
+        'not null' => TRUE,
+        'default' =>  0,
+      ),
+      'settings' => array(
+        'description' => 'Additional registry settings.',
+        'type' => 'text',
+        'size' => 'medium',
+        'serialize' => TRUE,
+      ),
+    ),
+    'unique keys' => array(
+      'registry_product' => array('registry_id', 'product_id'),
+    ),
+  );
+
+  // Registry purchase log.
+  $schema['commerce_registry_purchased'] = array(
+    'description' => 'Registry product purchases.',
+    'fields' => array(
+      'registry_id' => array(
+        'type' => 'int',
+        'description' => 'Registry identifier for the purchase.',
+        'not null' => TRUE,
+      ),
+      'product_id' => array(
+        'type' => 'int',
+        'description' => 'Product ID that was purchased.',
+        'not null' => TRUE,
+      ),
+      'order_id' => array(
+        'type' => 'int',
+        'description' => 'Order ID of the purchase.',
+        'not null' => TRUE,
+      ),
+      'quantity' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 1,
+        'description' => 'Quantity of the product purchased.',
+      ),
+      'purchaser_uid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'UID of the purchaser.',
+      ),
+    ),
+    'unique keys' => array(
+      'registry_product_order' => array('registry_id', 'product_id', 'order_id'),
+    ),
+  );
+
+  // Registry specific access settings.
+  $schema['commerce_registry_access'] = array(
+    'description' => 'Access settings for a registry.',
+    'fields' => array(
+      'registry_id' => array(
+        'type' => 'int',
+        'description' => 'Registry identifier.',
+        'not null' => TRUE,
+      ),
+      'access_id' => array(
+        'type' => 'int',
+        'description' => 'The ID of the access type, either a user ID or a role ID.',
+        'not null' => TRUE,
+      ),
+      'access_type' => array(
+        'type' => 'varchar',
+        'length' => 100,
+        'description' => 'The access type. Either user or role',
+        'not null' => TRUE,
+      ),
+      'added_by' => array(
+        'type' => 'int',
+        'description' => 'User ID that added this access setting.',
+        'not null' => TRUE,
+        'default' => 1,
+      ),
+      'allowed_methods' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+        'size' => 'medium',
+        'serialize' => TRUE,
+        'description' => 'Methods allowed to this access rule.',
+      ),
+      'log_message' => array(
+        'type' => 'text',
+        'size' => 'medium',
+        'description' => 'Log message regarding this access setting.',
+      ),
+    ),
+    'unique keys' => array(
+      'registry_access_type' => array('registry_id', 'access_id', 'access_type'),
+    ),
+  );
+
+  $schema['commerce_registry_urls'] = array(
+    'description' => 'URLs associated with a registry.',
+    'fields' => array(
+      'registry_id' => array(
+        'type' => 'int',
+        'description' => 'Registry identifier.',
+        'not null' => TRUE,
+      ),
+      'url' => array(
+        'description' => 'Registry access URL.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+    ),
+    'unique keys' => array(
+      'registry_url' => array('registry_id', 'url'),
+    ),
+  );
+
+  return $schema;
+}
+
+/**
+ * Implements hook_install().
+ */
+function commerce_registry_install() {
+  // Add three basic registry types.
+  db_insert('commerce_registry_type')
+    ->fields(array(
+      'type' => 'registry',
+      'label' => 'Basic registry',
+    ))
+    ->execute();
+  db_insert('commerce_registry_type')
+    ->fields(array(
+      'type' => 'wedding',
+      'label' => 'Wedding registry',
+    ))
+    ->execute();
+  db_insert('commerce_registry_type')
+    ->fields(array(
+      'type' => 'gift',
+      'label' => 'Gift registry',
+    ))
+    ->execute();
+}

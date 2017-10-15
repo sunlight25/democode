@@ -1,0 +1,18 @@
+name = Address Field Lookup Postcode Anywhere
+description = Provides a PCA Predict (formerly Postcode Anywhere) based address field lookup service.
+package = Address Field Lookup Postcode Anywhere
+core = 7.x
+configure = admin/config/regional/addressfield-lookup/postcodeanywhere/configure
+
+files[] = includes/pcapredict/pcapredict.api.inc
+files[] = includes/pcapredict/pcapredict.adapter.inc
+files[] = includes/addressfield_lookup_postcodeanywhere.service.inc
+
+dependencies[] = addressfield_lookup
+
+; Information added by Drupal.org packaging script on 2016-08-30
+version = "7.x-2.19"
+core = "7.x"
+project = "addressfield_lookup"
+datestamp = "1472591640"
+

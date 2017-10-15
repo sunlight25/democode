@@ -1,0 +1,5 @@
+name = Viamo Commerce
+description = Override Drupal Commerce Function.
+package = Core
+version = VERSION
+core = 7.x

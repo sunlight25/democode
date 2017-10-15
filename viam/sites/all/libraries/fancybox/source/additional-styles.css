@@ -1,0 +1,236 @@
+/*
+
+	FancyBox3 Confirm dialog
+	Used on the dashboard for removing a product
+
+*/
+
+.fc-container .fancybox-bg {
+  background: #3e454f;
+}
+
+.fancybox-is-open.fc-container .fancybox-bg {
+  opacity: 1;
+}
+
+.fc-content {
+  margin: 20px;
+  max-width: 550px;
+  padding: 50px;
+  box-shadow: 10px 10px 60px -25px;
+  border-radius: 4px;
+}
+
+.fc-content h2 {
+  margin-top: 0;
+  font-size: 1.6em;
+  letter-spacing: normal;
+}
+
+.fc-content p {
+  color: #666;
+  line-height: 1.5;
+}
+
+.fc-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* Custom animation */
+.fancybox-fx-material.fancybox-slide--previous,
+.fancybox-fx-material.fancybox-slide--next {
+  transform: translateY(-60px) scale(1.1);
+  opacity: 0;
+}
+
+.fancybox-fx-material.fancybox-slide--current {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.fancybox-container .progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+	display: none
+}
+.fancybox-container .progress.active { display: block}
+/*
+
+		Advanced example - Product quick view
+
+	*/
+
+	.quick-view-container {
+		background: rgba(10,10,10,0.85);
+	}
+
+	.quick-view-content {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		margin: auto;
+		width: calc(100% - 40px);
+		height: calc(100% - 40px);
+		max-width: 980px;
+		max-height: 650px;
+	}
+
+	.quick-view-carousel {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width: 57%;
+		background: #fff;
+	}
+
+	.quick-view-carousel .fancybox-stage {
+		bottom: 30px;
+	}
+
+	.quick-view-aside {
+	    position: absolute;
+	    top: 30px;
+	    right: 0;
+	    bottom: 30px;
+	    left: auto;
+	    width: 43%;
+	    padding: 50px 0 30px 0;
+	    background: #fff;
+	    color: #777;
+	}
+
+	.quick-view-aside::before, .quick-view-aside::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+	}
+
+	.quick-view-aside::before {
+	    width: 8px;
+	    background: #f4f4f4;
+	}
+
+	.quick-view-aside::after {
+	    width: 1px;
+	    background: #e9e9e9;
+	}
+
+	.quick-view-aside > div {
+		height: 100%;
+		overflow: auto;
+		padding: 5vh 30px 0 30px;
+		text-align: center;
+	}
+
+	.quick-view-aside > div > p {
+		font-size: 90%;
+	}
+
+	.quick-view-close {
+	    position: absolute;
+	    top: 30px;
+	    right: 0;
+	    width: 44px;
+	    height: 44px;
+	    background: #F0F0F0;
+	    padding: 0;
+	    margin: 0;
+	    border: 0;
+	    cursor: pointer;
+	    font-family: Arial;
+	    font-size: 14px;
+	    color: #222;
+	    text-indent: -99999px;
+		transition: all .2s;
+	}
+
+	.quick-view-close:hover {
+		background: #e4e4e4;
+	}
+
+	.quick-view-close::before,
+	.quick-view-close::after {
+		content: '';
+		position: absolute;
+		top: 12px;
+		left: 22px;
+		width: 1px;
+		height: 18px;
+		background-color: #222;
+	}
+
+	.quick-view-close:before {
+		-webkit-transform: rotate(-45deg);
+		   -moz-transform: rotate(-45deg);
+		    -ms-transform: rotate(-45deg);
+		     -o-transform: rotate(-45deg);
+		        transform: rotate(-45deg);
+	}
+
+	.quick-view-close:after {
+		-webkit-transform: rotate(45deg);
+		   -moz-transform: rotate(45deg);
+		    -ms-transform: rotate(45deg);
+		     -o-transform: rotate(45deg);
+		        transform: rotate(45deg);
+	}
+
+
+	.quick-view-bullets {
+		list-style: none;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		text-align: center;
+		margin: 0;
+		padding: 0;
+		z-index: 99999;
+		-webkit-tap-highlight-color: rgba(0,0,0,0);
+	}
+
+	.quick-view-bullets li {
+		display: inline-block;
+		vertical-align: top;
+	}
+
+	.quick-view-bullets li a {
+		display: block;
+		height: 30px;
+		width: 20px;
+		position: relative;
+	}
+
+	.quick-view-bullets li a span {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+		width: 10px;
+		height: 10px;
+		border-radius: 99px;
+		text-indent: -99999px;
+		overflow: hidden;
+		background: #d4d2d2;
+
+	}
+
+	.quick-view-bullets li.active a span {
+		background: #FF6666;
+	}
+
+	/*
+		// End of examples
+	*/

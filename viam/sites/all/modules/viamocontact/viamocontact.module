@@ -1,0 +1,132 @@
+<?php
+
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * Implements hook_form_alter().
+ */
+function viamocontact_form_alter(&$form, $form_state, $form_id) {
+  switch ($form_id) {
+    case 'contact_personal_form':
+    unset($form['name']);
+   // unset($form['subject']);        
+    
+    $form['subject']['#type']='hidden';
+    $form['actions']['submit']['#attributes']['class'][] ='btn';
+    $form['#attributes']['class'] = "row";
+    $form['mail']['#title'] = 'Email Address';
+    $form['mail']['#title'] = 'Email Address';
+    $form['mail']['#title_display'] = 'invisible';
+    $form['mail']['#attributes']['placeholder'] = t('Email Address');
+    
+    $form['message']['#title'] = 'Message';
+    $form['message']['#title_display'] = 'invisible';
+    $form['message']['#attributes']['placeholder'] = t('Message');   
+                   
+    $form['mail']['#attributes']['class'][]    = 'form-control form-control-lg';
+    $form['mail']['#prefix']='<div class="col-12 mt-4 mb-4">';
+    $form['mail']['#suffix']='</div>';
+
+    $form['message']['#attributes']['class'][] = 'form-control form-control-lg'; 
+    $form['message']['#prefix']='<div class="col-12">';
+    $form['message']['#suffix']='</div>';
+    $form['message']['#rows']='3';
+    
+    $form['suffix'] = array(
+      '#title' => t('Suffix'),      
+      '#type' => 'textfield',
+      '#prefix'=>'<div class="col-2">',  
+      '#suffix' =>'</div>',
+      '#title_display' => 'invisible', 
+      '#attributes' => array('class'=>array('form-control form-control-lg'),'placeholder'=>t('Suffix')),      
+      '#required' => TRUE,
+    );    
+    $form['firstname'] = array(
+      '#type' => 'textfield',
+      '#prefix'=>'<div class="col-5">',  
+      '#suffix' =>'</div>',   
+      '#title' => t('First Name'),      
+      '#title_display' => 'invisible',   
+      '#attributes' => array('class'=>array('form-control form-control-lg'),'placeholder'=>t('First Name')),      
+      '#maxlength' => 255,
+      //'#default_value' => $user->uid ? format_username($user) : '',
+      '#required' => TRUE,
+    );
+    $form['lastname'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Last Name'),
+      '#prefix'=>'<div class="col-5">',  
+      '#suffix' =>'</div>',
+      '#title_display' => 'invisible',           
+      '#maxlength' => 255,
+      '#attributes' => array('class'=>array('form-control form-control-lg'),'placeholder'=>t('Last Name')),      
+      //'#default_value' => $user->uid ? format_username($user) : '',
+      '#required' => TRUE,
+    );  
+    
+    $form['#submit'][] =  'viamocontact_personal_form_submit';
+    
+    //echo "<pre>";
+    //print_r($form); exit;
+    
+    $order = array(
+      '1' => 'suffix',      	
+      '2' => 'firstname',
+      '3' => 'lastname',
+      '4' => 'mail',
+      '5' => 'subject',
+      '6' => 'message',      	      	
+    );
+    foreach ($order as $key => $field) {
+      $form[$field]['#weight'] = $key;
+    }
+      break;
+  }
+}
+
+
+/**
+ * Form submission handler for viamocontact_personal_form_submit().
+ *
+ * @see contact_personal_form_validate()
+ */
+function viamocontact_personal_form_submit($form, &$form_state) {
+  global $user, $language;       
+  $values = $form_state['values'];
+  $values['sender'] = clone $user;
+  $values['sender']->name = $values['firstname'].' '.$values['lastname'];
+  $values['sender']->mail = $values['mail'];
+  $values['name']=  $values['firstname'].' '.$values['lastname'];
+  
+  // Save the anonymous user information to a cookie for reuse.
+  if (!$user->uid) {
+    user_cookie_save(array_intersect_key($values, array_flip(array('name', 'mail'))));
+  }
+
+  // Get the to and from e-mail addresses.
+  //$to = $values['recipient']->mail;
+  $to = (isset($values['recipient']->venue_contact_email))?$values['recipient']->venue_contact_email:$values['recipient']->mail;
+  
+  $from = $values['sender']->mail;
+
+  // Send the e-mail in the requested user language.
+  drupal_mail('contact', 'user_mail', $to, user_preferred_language($values['recipient']), $values, $from);
+
+  // Send a copy if requested, using current page language.
+  if ($values['copy']) {
+    drupal_mail('contact', 'user_copy', $from, $language, $values, $from);
+  }
+
+  flood_register_event('contact', variable_get('contact_threshold_window', 3600));
+  watchdog('mail', '%sender-name (@sender-from) sent %recipient-name an e-mail.', array('%sender-name' => $values['name'], '@sender-from' => $from, '%recipient-name' => $values['recipient']->name));
+
+  // Jump to the contacted user's profile page.
+  //drupal_set_message(t('Your message has been sent.'));
+  $form_state['redirect'] = user_access('access user profiles') ? 'user/' . $values['recipient']->uid : '';
+}
+
+

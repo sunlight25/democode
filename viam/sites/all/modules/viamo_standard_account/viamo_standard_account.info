@@ -1,0 +1,4 @@
+name = Viamo Standard Account
+description = Viamo standard account access and (provide create a gift list) Functionality. 
+core = 7.x
+package = z

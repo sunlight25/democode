@@ -1,0 +1,11 @@
+<?php
+/*
+ *  hook_form_alter()
+ */
+
+function viamoguestmail_send_mail_page_form_alter(&$form, &$form_state) {
+    
+    //echo "<pre>";
+    //print_r($form);  exit;        
+    
+}
